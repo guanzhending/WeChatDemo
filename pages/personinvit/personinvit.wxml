@@ -5,16 +5,16 @@
         <image src='../../image/1.png' mode='{{mode}}' style='height:100%;width:100%;'></image>
     </view>
     <view class='name'>
-        <text style='font-size:20px;color:#ffffff;'>苏州校友会</text>
+        <text style='font-size:20px;color:#ffffff;'>{{alumniInfo.name}}</text>
     </view>
     <view style='display: flex;flex-direction: column;align-items: center;margin-top:5px;'>
-        <text style='font-size:15px;color:#ffffff;'>中国矿业大学</text>
+        <text style='font-size:15px;color:#ffffff;'>{{alumniInfo.school_info.schoolname}}</text>
     </view>
   </view>
   <view class='schoolmessage'>
     <view class='schoolinfo'>
       <view style='width:100%;'>
-        <text style='word-wrap:break-word; font-size:14px;color:#999999;'>4123sfnjkdsafjkdshakjfhdjksahfkjdashkjfsfdsafdsafdsafdsa</text>
+        <text style='word-wrap:break-word; font-size:14px;color:#999999;'>{{alumniInfo.content}}</text>
       </view>
     </view>
   </view>
@@ -28,14 +28,14 @@
           <view style='height:100%;width:80%;' class='personinfo3'>
             <view style='margin-left:10px;height:100%;'>
               <view style='height:30%;color:#000000;font-size:20px;'>
-                <text style='height:100%;'>李敏敏</text>
+                <text style='height:100%;'>{{userinfo.name}}</text>
               </view>
               <view style='height:25%;'>
-                <text style='color:#A9A9A9;font-size:15px;'>艺术设计 04班</text>
+                <text style='color:#A9A9A9;font-size:15px;'>{{userinfo.zhuanye_info.name}} {{userinfo.banji}}</text>
               </view>
               <view>
                 <text style='color:#A9A9A9;font-size:15px;'>邀请你加入</text>
-                <text style='color:#00A0FF;font-size:15px;'>太原理工大学fdsafdsafdsa</text>
+                <text style='color:#00A0FF;font-size:15px;'>{{alumniInfo.name}}</text>
               </view>
             </view>
           </view>
@@ -43,7 +43,7 @@
       </view>
     </view>
     <view style='margin-top:20px;'>
-        <button class="weui-btn" type="primary" style='background-color:#2ebd59;margin:0px 20px;' formType="submit">加入</button>
+        <button class="weui-btn" type="primary" style='background-color:#2ebd59;margin:0px 20px;' bindtap="join">加入</button>
       </view>
   </view>
 </view>

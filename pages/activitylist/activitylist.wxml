@@ -32,7 +32,7 @@
                   </view>
                   <view class='message'  style='justify-content: flex-start;'>
                     <text class='time'>地点　</text>
-                    <text class='time'>{{activity.address}}</text>
+                    <text class='time' style='display:block;width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;'>{{activity.address}}</text>
                   </view>
                 </view>
               </view>

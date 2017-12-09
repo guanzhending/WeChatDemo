@@ -1,4 +1,11 @@
 /* pages/alumnipage/alumnipage.wxss */
+Page {
+  background: #F4F6F7;
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
 .schoolmessage {
   display: flex;
   flex-direction:column;

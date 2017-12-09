@@ -13,6 +13,13 @@ Page({
     alumnis: '',
     src: '../../image/1.png',
     mode: 'scaleToFill',
+    search: '',
+    isshow: true
+  },
+  create: function () {
+    wx.navigateTo({
+      url: '../createpage/createpage',
+    })
   },
   showInput: function () {
     this.setData({
@@ -31,6 +38,27 @@ Page({
     });
   },
   inputTyping: function (e) {
+    var _this=this;
+    var openid = app.globalData.openid;
+    if(openid != '' || openid != undefined){
+      var datas = {
+        keywords: e.detail.value,
+        openid: openid
+      }
+      wx.request({
+        url: app.globalData.url + 'apiXiaoyouList',
+        data: datas,
+        method: 'POST',
+        success: function (res) {
+          _this.setData({
+            search: res.data
+          });
+        },
+        fail: function (res) {
+          console.error(res);
+        }
+      })
+    }
     this.setData({
       inputVal: e.detail.value
     });
@@ -56,7 +84,6 @@ Page({
       title: '加载中',
       mask: true
     })
-    console.info('111111');
     var _this = this;
     var openid = app.globalData.openid;
     if (openid == '') {
@@ -68,7 +95,15 @@ Page({
           data: { openid: openid },
           method: 'POST',
           success: function (res) {
-            console.info(res.data);
+            if(res.data == ''){
+              _this.setData({
+                isshow: false,
+              })
+            }else{
+              _this.setData({
+                isshow: true,
+              })
+            }
             _this.setData({
               alumnis: res.data,
             })
@@ -86,6 +121,15 @@ Page({
         data: { openid: openid },
         method: 'POST',
         success: function (res) {
+          if (res.data == '') {
+            _this.setData({
+              isshow: false,
+            })
+          }else{
+            _this.setData({
+              isshow: true,
+            })
+          }
           _this.setData({
             alumnis: res.data,
           })
@@ -103,7 +147,35 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    // wx.hideLoading();
+    var _this = this;
+    wx.showLoading({
+      title: '加载中',
+      mask: true
+    })
+    wx.request({
+      url: app.globalData.url + 'apiXiaoyouList',
+      data: { openid: app.globalData.openid },
+      method: 'POST',
+      success: function (res) {
+        if (res.data == '') {
+          _this.setData({
+            isshow: false,
+          })
+        } else {
+          _this.setData({
+            isshow: true,
+          })
+        }
+        _this.setData({
+          alumnis: res.data,
+        })
+        wx.hideLoading();
+      },
+      fail: function (res) {
+        wx.hideLoading();
+        console.error(res);
+      }
+    })
   },
 
   /**
@@ -121,17 +193,9 @@ Page({
   },
 
   /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-    console.info('这是下拉');
-  },
-
-  /**
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
-    console.info('这是上拉');
     wx.showLoading({
       title: '加载中',
       mask: true
@@ -147,6 +211,15 @@ Page({
           data: { openid: openid },
           method: 'POST',
           success: function (res) {
+            if (res.data == '') {
+              _this.setData({
+                isshow: false,
+              })
+            } else {
+              _this.setData({
+                isshow: true,
+              })
+            }
             _this.setData({
               alumnis: res.data,
             })
@@ -164,6 +237,15 @@ Page({
         data: { openid: openid },
         method: 'POST',
         success: function (res) {
+          if (res.data == '') {
+            _this.setData({
+              isshow: false,
+            })
+          } else {
+            _this.setData({
+              isshow: true,
+            })
+          }
           _this.setData({
             alumnis: res.data,
           })
@@ -175,12 +257,5 @@ Page({
         }
       })
     }
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-  
   }
 })

@@ -17,19 +17,6 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    var _this = this;
-    var openid = app.globalData.openid;
-    wx.request({
-      url: app.globalData.url + 'apiActivityList',
-      data: { openid: openid },
-      method: 'POST',
-      success: function(res){
-        console.info(res.data);
-        _this.setData({
-          activitylist: res.data,
-        })
-      }
-    })
   },
 
   /**
@@ -43,7 +30,25 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-  
+    var _this = this;
+    var openid = app.globalData.openid;
+    wx.showLoading({
+      title: '加载中',
+      mask: true
+    })
+    wx.request({
+      url: app.globalData.url + 'apiActivityList',
+      data: { openid: openid },
+      method: 'POST',
+      success: function (res) {
+        _this.setData({
+          activitylist: res.data,
+        })
+      },
+      complete: function (res){
+        wx.hideLoading();
+      }
+    })
   },
 
   /**

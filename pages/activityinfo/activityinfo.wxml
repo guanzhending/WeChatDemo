@@ -47,7 +47,7 @@
       <button class="weui-btn" type="primary" style='background-color:#2ebd59;' bindtap="enrol">报名参加</button>
     </view>
     <view style='padding:0px 15px;margin-top:15px;'>
-      <button class="weui-btn" type="primary" style='background-color:#2ebd59;' open-type="share">分享活动</button>
+      <button class="weui-btn" type="primary" style='background-color:#2ebd59;'bindtap="share">分享活动</button>
     </view>
     <view style='padding:0px 15px;margin-top:15px;' wx:if="{{is_creater}}">
       <button class="weui-btn" type="default" bindtap="edit">编辑活动</button>

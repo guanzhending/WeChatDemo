@@ -1,6 +1,7 @@
 {
   "pages": [
     "pages/alumnilist/alumnilist",
+    "pages/invitation/invitation",
     "pages/createpage/createpage",
     "pages/activitylist/activitylist",
     "pages/activityinfo/activityinfo",

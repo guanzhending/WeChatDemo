@@ -12,7 +12,7 @@
     </view>
   </view>
   <view class='page__bd'>
-    <view class="weui-cells weui-cells_after-title">
+    <view class="weui-cells weui-cells_after-title" wx:if="{{info.tel != null}}">
       <view class="weui-cell">
         <view class="weui-cell__hd">
             <image src="../../image/iphone2.png" style="margin-right: 15px;vertical-align: middle;width:30px; height: 30px;"></image>

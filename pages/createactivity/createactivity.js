@@ -25,6 +25,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    console.info('hha');
     var _this=this;
     var country = Array();
     wx.request({
@@ -296,29 +297,29 @@ Page({
         //   name: 'activityimg',
         //   success: function(res){
         //     wx.hideLoading();
-        //     wx.showToast({
-        //       title: '保存成功',
-        //       icon: 'success',
-        //       duration: 2000,
-        //       mask: true
-        //     })
-        //   },
-        //   fail: function(res){
-        //     wx.hideLoading();
-        //     wx.showToast({
-        //       title: '保存失败',
-        //       duration: 2000,
-        //       mask: true
-        //     })
-        //   }
+            wx.showToast({
+              title: '保存成功',
+              icon: 'success',
+              duration: 2000,
+              mask: true
+            })
+          // },
+          // fail: function(res){
+            // wx.hideLoading();
+            // wx.showToast({
+            //   title: '保存失败',
+            //   duration: 2000,
+            //   mask: true
+            // })
+          // }
         // })
-        // wx.switchTab({
-        //   url: '../visitcard/visitcard',
-        //   success: function (res) {
-        //   },
-        //   fail: function (res) {
-        //   }
-        // })
+        wx.switchTab({
+          url: '../activitylist/activitylist',
+          success: function (res) {
+          },
+          fail: function (res) {
+          }
+        })
       },
       fail: function (res) {
         wx.hideLoading();

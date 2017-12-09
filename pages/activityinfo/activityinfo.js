@@ -87,12 +87,6 @@ Page({
   onReachBottom: function () {
   
   },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-  },
   /**
    * 报名
    */
@@ -118,6 +112,11 @@ Page({
   edit: function(){
     wx.navigateTo({
       url: '../createactivity/createactivity?id=' + this.data.activityInfo.id
+    })
+  },
+  share: function(){
+    wx.navigateTo({
+      url: '../invitation/invitation?id=' + this.data.activityInfo.id
     })
   }
 })

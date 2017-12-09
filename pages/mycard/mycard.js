@@ -8,14 +8,29 @@ Page({
    * 页面的初始数据
    */
   data: {
-    backimg: app.globalData.imgurl
+    backimg: app.globalData.imgurl,
+    smallimg: app.globalData.smallimg,
+    info: ''
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-  
+   var _this = this;
+   wx.request({
+     url: app.globalData.url + 'apiUserInfo',
+     data: { id: options.userid},
+     method: 'POST',
+     success: function (res) {
+       _this.setData({
+         info: res.data
+       });
+     },
+     fail: function (res) {
+       console.error(res);
+     }
+   })
   },
 
   /**
@@ -57,13 +72,6 @@ Page({
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
-  
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
   
   }
 })

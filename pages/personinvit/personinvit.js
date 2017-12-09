@@ -1,4 +1,6 @@
 // pages/personinvit/personinvit.js
+const app = getApp();
+
 Page({
 
   /**
@@ -7,14 +9,39 @@ Page({
   data: {
     mode: 'scaleToFill',
     img: '../../image/1.png',
-    topmsg: 'http://m.tianluyangfa.com/smallprogram/public/images/pic/xiaoyouhui_top.jpeg'
+    topmsg: app.globalData.imgurl,
+    alumniInfo: '',
+    userinfo: ''
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-  
+    var _this = this;
+    if(options){
+      wx.request({
+        url: app.globalData.url + 'apiXiaoyouhuiDetail/' + options.id,
+        success: function (res) {
+          _this.setData({
+            alumniInfo: res.data
+          })
+        }
+      })
+      wx.request({
+        url: app.globalData.url + 'apiUserInfo',
+        data: { id: options.userid },
+        method: 'POST',
+        success: function (res) {
+          _this.setData({
+            userinfo: res.data
+          });
+        },
+        fail: function (res) {
+          console.error(res);
+        }
+      })
+    }
   },
 
   /**
@@ -64,5 +91,65 @@ Page({
    */
   onShareAppMessage: function () {
   
+  },
+  /**
+   * 加入校友会
+   */
+  join: function(){
+    wx.showLoading({
+      title: '加载中',
+      mask: true
+    })
+    var _this = this;
+    var openid = app.globalData.openid;
+    if (openid == '') {
+      app.openIdReadyCallback = res => {
+        var json = JSON.parse(res.data);
+        openid = json.openid;
+        var data = {
+          openid: openid,
+          xiaoyouhui_id: _this.data.alumniInfo.id
+        }
+        wx.request({
+          url: app.globalData.url + 'apiEnterXiaoyou',
+          method: 'POST',
+          data: data,
+          success: function (res) {
+            wx.hideLoading();
+          },
+          fail: function (res) {
+            wx.hideLoading();
+            wx.showModal({
+              title: '',
+              content: '加入失败',
+              showCancel: false,
+              confirmText: '知道了'
+            })
+          }
+        })
+      }
+    } else {
+      var data = {
+        openid: openid,
+        xiaoyouhui_id: _this.data.alumniInfo.id
+      }
+      wx.request({
+        url: app.globalData.url + 'apiEnterXiaoyou',
+        method: 'POST',
+        data: data,
+        success: function(res){
+          wx.hideLoading();
+        },
+        fail: function(res){
+          wx.hideLoading();
+          wx.showModal({
+            title: '',
+            content: '加入失败',
+            showCancel: false,
+            confirmText: '知道了'
+          })
+        }
+      })
+    }
   }
 })
