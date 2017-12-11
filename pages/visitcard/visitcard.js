@@ -81,11 +81,14 @@ Page({
         data: { openid: openid },
         method: 'POST',
         success: function (res) {
+          console.info(res);
           if (app.globalData.userInfo) {
+            console.info(app.globalData.userInfo);
             _this.setData({
               userInfo: app.globalData.userInfo,
             })
           } else {
+            console.info('222');
             wx.getUserInfo({
               success: res => {
                 app.globalData.userInfo = res.userInfo

@@ -10,13 +10,29 @@ Page({
   data: {
     backimg: app.globalData.imgurl,
     smallimg: app.globalData.smallimg,
-    info: ''
+    info: '',
+    userInfo: ''
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    var _this =this;
+    if (app.globalData.userInfo) {
+      _this.setData({
+        userInfo: app.globalData.userInfo,
+      })
+    } else {
+      wx.getUserInfo({
+        success: res => {
+          app.globalData.userInfo = res.userInfo
+          _this.setData({
+            userInfo: res.userInfo,
+          })
+        }
+      })
+    }
    var _this = this;
    wx.request({
      url: app.globalData.url + 'apiUserInfo',

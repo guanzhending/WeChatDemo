@@ -41,11 +41,11 @@ Page({
             })
           }
         }
-        console.info(res.data.school_info.logo);
+        console.info(typeof (res.data.school_info.logo));
         _this.setData({
           info: res.data,
           addresslisturl: '../addresslist/addresslist?id=' + res.data.id,
-          headimg: app.globalData.imgpath+res.data.school_info.logo
+          headimg: app.globalData.imgpath + res.data.school_info.logo
         })
         if (res.data.activitys.length > 0){
           _this.setData({
@@ -81,11 +81,10 @@ Page({
             })
           }
         }
-        console.info(res.data.school_info.logo);
         _this.setData({
           info: res.data,
           addresslisturl: '../addresslist/addresslist?id=' + res.data.id,
-          headimg: app.globalData.imgpath + res.data.school_info
+          headimg: app.globalData.imgpath + res.data.school_info.logo
         })
         if (res.data.activitys.length > 0) {
           _this.setData({

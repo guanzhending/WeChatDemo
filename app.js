@@ -2,7 +2,7 @@
 App({
   onLaunch: function (ops) {
     if (ops.scene == 1044) {
-      console.log(ops.shareTicket)
+      console.log(ops);
     }
     // 展示本地存储能力
     var logs = wx.getStorageSync('logs') || []

@@ -12,8 +12,8 @@
           <view class='acontent'>
             <view class='content'>
               <text style='font-size:10px;'>{{activity.date}}</text>
-              <text style='font-size:25px;font-family:"黑体"'>5</text>
-              <text style='font-size:13px;'>周五</text>
+              <text style='font-size:25px;font-family:"黑体"'>{{activity.day}}</text>
+              <text style='font-size:13px;'>{{activity.week}}</text>
             </view>
             <view class='content2'>
               <view style='display: flex;flex-direction:column;height:100%;width:100%;'>

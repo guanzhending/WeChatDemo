@@ -149,7 +149,7 @@
               <view class="weui-label">生日</view>
           </view>
           <view class="weui-cell__bd">
-            <picker mode="date" value="{{birthday}}" start="2010-09-01" end="2117-09-01" bindchange="bindBirthdayChange" name="birthday">
+            <picker mode="date" value="{{birthday}}" start="1800-09-01" end="2117-09-01" bindchange="bindBirthdayChange" name="birthday">
                 <view class="weui-select weui-select_in-select-after" style='text-align:right;'>{{birthday}}</view>
             </picker>
           </view>
@@ -159,7 +159,7 @@
             <view class="weui-label">爱好</view>
           </view>
           <view class="weui-cell__bd">
-              <input class="weui-input" placeholder="多个爱好空格分开可用" style='text-align:right;' name="interest" value='{{interestVal}}'/>
+              <input class="weui-input" style='text-align:right;' name="interest" value='{{interestVal}}'/>
           </view>
         </view>
       </view>

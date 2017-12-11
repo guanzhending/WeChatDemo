@@ -7,7 +7,7 @@ Page({
    */
   data: {
     mode: 'scaleToFill',
-    topimg: app.globalData.imgurl,
+    topimg: app.globalData.imgpath + 'invite2.jpg',
     info: {},
     userInfo: {},
     activityinfo: '',
@@ -125,6 +125,7 @@ Page({
     }
   },
   onShareAppMessage: function (res) {
+    var _this = this;
     if (res.from === 'button') {
       // 来自页面内转发按钮
     }

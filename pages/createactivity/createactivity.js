@@ -18,29 +18,32 @@ Page({
     isAgree: false,
     tempFilePaths: '',
     realname: "",
-    activityInfo: ''
+    activityInfo: '',
+    activityID: 0
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    console.info('hha');
-    var _this=this;
+    var _this = this;
     var country = Array();
     wx.request({
       url: app.globalData.url + 'apiXiaoyouList',
       data: { openid: app.globalData.openid },
       method: 'POST',
       success: function (res) {
-        for(var i=0;i<res.data.length;i++){
+        for (var i = 0; i < res.data.length; i++) {
           country.push(res.data[i].info[0].name);
         }
         _this.setData({
           countries: country,
           contryinfo: res.data
         })
-        if(options != ''){
+        if (options != '') {
+          _this.setData({
+            activityID: options.id
+          })
           var info = {
             openid: app.globalData.openid,
             id: options.id
@@ -51,7 +54,7 @@ Page({
             method: 'POST',
             success: function (res2) {
               for (var i = 0; i < res.data.length; i++) {
-                if (res2.data.xiaoyou_id == res.data[i].id){
+                if (res2.data.xiaoyou_id == res.data[i].info[0].id) {
                   _this.setData({
                     countryIndex: i
                   })
@@ -138,6 +141,8 @@ Page({
       sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
       sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
       success: function (res) {
+        console.info(res);
+        console.info('hhha');
         // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
         that.setData({
           files: that.data.files.concat(res.tempFilePaths)
@@ -188,9 +193,9 @@ Page({
             thistest.setData({
               realname: realname
             })
-            if (realname != undefined && realname != ''){
-              if (realname.length>10){
-                realname = res.name.substring(0,10)+'...';
+            if (realname != undefined && realname != '') {
+              if (realname.length > 10) {
+                realname = res.name.substring(0, 10) + '...';
               }
               thistest.setData({
                 address: realname
@@ -207,7 +212,6 @@ Page({
     });
   },
   formSubmit: function (e) {
-    console.log('form发生了submit事件，携带数据为：', e.detail.value)
     if (!this.data.isAgree) {
       wx.showModal({
         title: '',
@@ -218,7 +222,7 @@ Page({
       return
     }
     var acinfo = e.detail.value;
-    if (acinfo.actitle == ''){
+    if (acinfo.actitle == '') {
       wx.showModal({
         title: '',
         content: '您还没有输入活动标题',
@@ -236,7 +240,7 @@ Page({
       })
       return
     }
-    if (acinfo.herd == '') {
+    if (acinfo.herd == '' || acinfo.herd == null) {
       wx.showModal({
         title: '',
         content: '您还没有关联校友会',
@@ -263,7 +267,7 @@ Page({
       })
       return
     }
-    if(this.data.address == ""){
+    if (this.data.address == "" || this.data.address == undefined) {
       wx.showModal({
         title: '',
         content: '您还没有选择活动地址',
@@ -273,6 +277,7 @@ Page({
       return
     }
     var requestData = {
+      id: this.data.activityID,
       title: acinfo.actitle,
       content: acinfo.acinfo,
       address: this.data.realname,
@@ -297,21 +302,21 @@ Page({
         //   name: 'activityimg',
         //   success: function(res){
         //     wx.hideLoading();
-            wx.showToast({
-              title: '保存成功',
-              icon: 'success',
-              duration: 2000,
-              mask: true
-            })
-          // },
-          // fail: function(res){
-            // wx.hideLoading();
-            // wx.showToast({
-            //   title: '保存失败',
-            //   duration: 2000,
-            //   mask: true
-            // })
-          // }
+        wx.showToast({
+          title: '保存成功',
+          icon: 'success',
+          duration: 2000,
+          mask: true
+        })
+        // },
+        // fail: function(res){
+        // wx.hideLoading();
+        // wx.showToast({
+        //   title: '保存失败',
+        //   duration: 2000,
+        //   mask: true
+        // })
+        // }
         // })
         wx.switchTab({
           url: '../activitylist/activitylist',

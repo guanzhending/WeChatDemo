@@ -11,20 +11,30 @@ Page({
     img: '../../image/1.png',
     topmsg: app.globalData.imgurl,
     alumniInfo: '',
-    userinfo: ''
+    userinfo: '',
+    schoollogo: ''
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    if (!app.globalData.userInfo) {
+      wx.getUserInfo({
+        success: res => {
+          app.globalData.userInfo = res.userInfo
+        }
+      })
+    }
     var _this = this;
     if(options){
       wx.request({
         url: app.globalData.url + 'apiXiaoyouhuiDetail/' + options.id,
         success: function (res) {
+          console.info(res);
           _this.setData({
-            alumniInfo: res.data
+            alumniInfo: res.data,
+            schoollogo: app.globalData.imgpath + res.data.school_info.logo
           })
         }
       })
@@ -115,6 +125,7 @@ Page({
           method: 'POST',
           data: data,
           success: function (res) {
+            console.info(res);
             wx.hideLoading();
           },
           fail: function (res) {
@@ -139,6 +150,9 @@ Page({
         data: data,
         success: function(res){
           wx.hideLoading();
+          wx.navigateTo({
+            url: '',
+          })
         },
         fail: function(res){
           wx.hideLoading();

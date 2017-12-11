@@ -28,7 +28,6 @@ Page({
       data: info,
       method: 'POST',
       success: function (res) {
-        console.info(res);
         if(res.data.is_baoming == 1){
           _this.setData({
             is_baoming: false
@@ -117,6 +116,46 @@ Page({
   share: function(){
     wx.navigateTo({
       url: '../invitation/invitation?id=' + this.data.activityInfo.id
+    })
+  },
+  deleteActivity() {
+    var _this = this;
+    wx.showModal({
+      title: '提示',
+      content: '确定删除活动？',
+      success: function (res) {
+        if (res.confirm) {
+          wx.showLoading({
+            title: '正在删除',
+            mask: true
+          })
+          wx.request({
+            url: app.globalData.url + 'deleteActivity/' + _this.data.activityInfo.id,
+            method: 'GET',
+            success: function (res) {
+              wx.hideLoading();
+              wx.showToast({
+                title: '删除成功',
+                icon: 'success',
+                duration: 2000,
+                success: function (res) {
+                  wx.switchTab({
+                    url: '../activitylist/activitylist',
+                  })
+                }
+              })
+            },
+            fail: function (res) {
+              wx.hideLoading()
+              wx.showToast({
+                title: '删除失败',
+                icon: 'success',
+                duration: 2000
+              })
+            }
+          })
+        }
+      }
     })
   }
 })

@@ -32,7 +32,7 @@
       <view style='height:110px;background:#fff;padding:10px;'>
         <view class='alumniinfo'>
           <view class='alumniimg'>
-            <image src='{{src}}' mode='{{mode}}' style='height:100%;width:100%;'></image>
+            <image src='{{alumni.schoollogo}}' mode='{{mode}}' style='height:100%;width:100%;'></image>
           </view>
           <view class='alumnimsg'>
             <view style='font-size:15px;'>
