@@ -27,6 +27,8 @@ Page({
    */
   onLoad: function (options) {
     var _this = this;
+    console.info(options);
+    var _this=this;
     var country = Array();
     wx.request({
       url: app.globalData.url + 'apiXiaoyouList',
@@ -36,6 +38,7 @@ Page({
         for (var i = 0; i < res.data.length; i++) {
           country.push(res.data[i].info[0].name);
         }
+        console.info(country);
         _this.setData({
           countries: country,
           contryinfo: res.data
@@ -212,6 +215,7 @@ Page({
     });
   },
   formSubmit: function (e) {
+    console.log('form发生了submit事件，携带数据为：', e.detail.value);
     if (!this.data.isAgree) {
       wx.showModal({
         title: '',
