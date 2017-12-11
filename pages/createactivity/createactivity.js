@@ -18,14 +18,15 @@ Page({
     isAgree: false,
     tempFilePaths: '',
     realname: "",
-    activityInfo: ''
+    activityInfo: '',
+    activityID: 0
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    console.info('hha');
+    console.info(options);
     var _this=this;
     var country = Array();
     wx.request({
@@ -36,11 +37,15 @@ Page({
         for(var i=0;i<res.data.length;i++){
           country.push(res.data[i].info[0].name);
         }
+        console.info(country);
         _this.setData({
           countries: country,
           contryinfo: res.data
         })
         if(options != ''){
+          _this.setData({
+            activityID: options.id
+          })
           var info = {
             openid: app.globalData.openid,
             id: options.id
@@ -51,7 +56,7 @@ Page({
             method: 'POST',
             success: function (res2) {
               for (var i = 0; i < res.data.length; i++) {
-                if (res2.data.xiaoyou_id == res.data[i].id){
+                if (res2.data.xiaoyou_id == res.data[i].info[0].id){
                   _this.setData({
                     countryIndex: i
                   })
@@ -207,7 +212,7 @@ Page({
     });
   },
   formSubmit: function (e) {
-    console.log('form发生了submit事件，携带数据为：', e.detail.value)
+    console.log('form发生了submit事件，携带数据为：', e.detail.value);
     if (!this.data.isAgree) {
       wx.showModal({
         title: '',
@@ -236,7 +241,7 @@ Page({
       })
       return
     }
-    if (acinfo.herd == '') {
+    if (acinfo.herd == ''|| acinfo.herd == null) {
       wx.showModal({
         title: '',
         content: '您还没有关联校友会',
@@ -263,7 +268,7 @@ Page({
       })
       return
     }
-    if(this.data.address == ""){
+    if (this.data.address == "" || this.data.address == undefined){
       wx.showModal({
         title: '',
         content: '您还没有选择活动地址',
@@ -273,6 +278,7 @@ Page({
       return
     }
     var requestData = {
+      id: this.data.activityID,
       title: acinfo.actitle,
       content: acinfo.acinfo,
       address: this.data.realname,

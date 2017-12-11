@@ -43,7 +43,7 @@
                     <view class="weui-label">关联校友会</view>
             </view>
             <view class="weui-cell__bd">
-                <picker bindchange="bindCountryChange" value="{{contryinfo[countryIndex].id}}" range="{{countries}}" name="herd">
+                <picker bindchange="bindCountryChange" value="{{contryinfo[countryIndex].info[0].id}}" range="{{countries}}" name="herd">
                     <view class="weui-select weui-select_in-select-after" style='text-align:right;'>{{countries[countryIndex]}}</view>
                 </picker>
             </view>
