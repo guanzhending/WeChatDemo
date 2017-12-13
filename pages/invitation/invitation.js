@@ -129,7 +129,7 @@ Page({
     if (res.from === 'button') {
       // 来自页面内转发按钮
     }
-    var path = 'pages/personinvit/personinvit?id=' + _this.data.info.id + '&userid=' + _this.data.info.userinfo.id;
+    var path = 'pages/joinactivity/joinactivity?id=' + _this.data.info.id + '&userid=' + _this.data.info.userinfo.id;
     return {
       title: '自定义转发标题',
       path: path,

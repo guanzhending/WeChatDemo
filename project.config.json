@@ -21,13 +21,13 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": -1,
+			"current": 0,
 			"list": [
 				{
 					"id": 0,
 					"name": "分享",
-					"pathName": "pages/personinvit/personinvit",
-					"query": "id=36&userid=8",
+					"pathName": "pages/joinactivity/joinactivity",
+					"query": "id=24&userid=8",
 					"scene": "1044"
 				}
 			]

@@ -101,7 +101,6 @@ Page({
           data: { openid: openid },
           method: 'POST',
           success: function (res) {
-            console.info(res);
             if (res.data == '') {
               _this.setData({
                 isshow: false,

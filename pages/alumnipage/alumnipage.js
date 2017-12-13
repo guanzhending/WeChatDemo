@@ -41,7 +41,6 @@ Page({
             })
           }
         }
-        console.info(typeof (res.data.school_info.logo));
         _this.setData({
           info: res.data,
           addresslisturl: '../addresslist/addresslist?id=' + res.data.id,
