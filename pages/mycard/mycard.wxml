@@ -37,7 +37,7 @@
       </view>
       <view style='height:100%;width:20%'>
         <view class='head_portrait'>
-          <image style='width:100%;height:100%;' src='{{userInfo.avatarUrl}}'></image>
+          <image style='width:100%;height:100%;' src='{{info.headImg}}'></image>
         </view>  
       </view>
     </view>

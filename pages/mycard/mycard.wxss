@@ -50,8 +50,8 @@ Page {
   width:50px;
 }
 .img {
-  height:20px;
-  width:20px;
+  height:18px;
+  width:18px;
   border-radius:12px;
   background:#fff;
   overflow:hidden;

@@ -39,7 +39,6 @@ Page({
   },
   inputTyping: function (e) {
     var _this = this;
-    console.info(e.detail.value);
     var openid = app.globalData.openid;
     if (openid != '' || openid != undefined) {
       var datas = {
@@ -51,7 +50,6 @@ Page({
         data: datas,
         method: 'POST',
         success: function (res) {
-          console.info(res.data);
           _this.setData({
             search: res.data
           });
@@ -94,7 +92,6 @@ Page({
         type: 1
       },
       success: function(res){
-        console.info(res.data);
         that.setData({
           list1: res.data
         })
@@ -107,7 +104,6 @@ Page({
         type: 2
       },
       success: function (res) {
-        console.info(res.data);
         that.setData({
           list2: res.data
         })
@@ -120,7 +116,6 @@ Page({
         type: 3
       },
       success: function (res) {
-        console.info(res.data);
         that.setData({
           list3: res.data
         })
@@ -153,7 +148,10 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-  
+    this.setData({
+      inputVal: "",
+      inputShowed: false
+    });
   },
 
   /**
@@ -182,15 +180,5 @@ Page({
    */
   onReachBottom: function () {
   
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-    // return {
-    //   title: '自定义转发标题',
-    //   path: '/pages/addresslist/addresslist'
-    // }
   }
 })

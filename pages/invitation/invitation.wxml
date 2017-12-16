@@ -12,7 +12,7 @@
           <text style='font-size:15px;color:#ffffff;'>{{info.school_info.schoolname}}{{activityinfo.xiaoyouinfo.name}}</text>
       </view>
       <view style='margin-top:13px;text-align:center;'>
-        <text style='font-size:18px;color:#fff;'>你的校友邀请您参加{{activityinfo.date}}{{activityinfo.address}}的{{activityinfo.title}}</text>
+        <text style='font-size:18px;color:#fff;'>您的校友邀请您参加{{activityinfo.date}}{{activityinfo.address}}的{{activityinfo.title}}</text>
       </view>
       <view style='margin-top:5px;'>
         <text style='font-size:11px;color:#fff;'>{{activityinfo.content}}</text>

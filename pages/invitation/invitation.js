@@ -76,7 +76,7 @@ Page({
               console.info(res.data);
             } else {
               wx.redirectTo({
-                url: '../../personal/personal',
+                url: '../personal/personal',
               })
             }
             wx.hideLoading();
@@ -113,7 +113,7 @@ Page({
             })
           } else {
             wx.redirectTo({
-              url: '../../personal/personal',
+              url: '../personal/personal',
             })
           }
           wx.hideLoading();
@@ -129,9 +129,11 @@ Page({
     if (res.from === 'button') {
       // 来自页面内转发按钮
     }
-    var path = 'pages/joinactivity/joinactivity?id=' + _this.data.info.id + '&userid=' + _this.data.info.userinfo.id;
+    var date = new Date();
+    var time = date.getFullYear() + "/" + (date.getMonth() +1) + "/" + date.getDate();
+    var path = 'pages/joinactivity/joinactivity?id=' + _this.data.activityinfo.id + '&userid=' + _this.data.info.id + '&time=' + time;
     return {
-      title: '自定义转发标题',
+      title: '邀请函',
       path: path,
       success: function (res) {
         // 转发成功

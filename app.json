@@ -1,7 +1,7 @@
 {
   "pages": [
-    "pages/joinactivity/joinactivity",
     "pages/alumnilist/alumnilist",
+    "pages/joinactivity/joinactivity",
     "pages/invitation/invitation",
     "pages/createpage/createpage",
     "pages/activitylist/activitylist",
@@ -14,9 +14,7 @@
     "pages/index/index",
     "pages/mycard/mycard",
     "pages/personinvit/personinvit",
-    "pages/create/create",
-    "pages/test/test",
-    "pages/logs/logs"
+    "pages/create/create"
   ],
   "window": {
     "backgroundTextStyle": "light",

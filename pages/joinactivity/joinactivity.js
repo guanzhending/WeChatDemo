@@ -11,7 +11,10 @@ Page({
     schoolinfo: '',
     xiaoyouinfo: '',
     activityinfo: '',
-    src: app.globalData.smallimg
+    src: app.globalData.smallimg,
+    userimg: '',
+    time: '',
+    userinfo: ''
   },
 
   /**
@@ -19,13 +22,11 @@ Page({
    */
   onLoad: function (options) {
     var _this = this;
-    console.info(options);
     wx.request({
       url: app.globalData.url + 'apiActivityDetail',
       data: { id: options.id },
       method: 'POST',
       success: function (res) {
-        console.info(res.data);
         if(res.data){
           _this.setData({
             activityinfo: res.data,
@@ -54,37 +55,21 @@ Page({
       }
     })
     wx.request({
-      url: app.globalData.url + 'apiActivityDetail',
-      data: { id: options.id },
+      url: app.globalData.url + 'apiUserInfo',
+      data: { id: options.userid },
       method: 'POST',
       success: function (res) {
-        console.info(res.data);
-        if (res.data) {
-          _this.setData({
-            activityinfo: res.data,
-          })
-          if (res.data.xiaoyouinfo != null) {
-            _this.setData({
-              xiaoyouinfo: res.data.xiaoyouinfo,
-            })
-          }
-          if (res.data.xiaoyou_id) {
-            wx.request({
-              url: app.globalData.url + 'apiXiaoyouhuiDetail/' + res.data.xiaoyou_id,
-              success: function (res2) {
-                if (res2.data.school_info != null) {
-                  _this.setData({
-                    schoolinfo: res2.data.school_info,
-                  })
-                }
-              },
-              fail: function (res3) {
-                console.error(res3);
-              }
-            })
-          }
-        }
+        _this.setData({
+          userimg: res.data.headImg,
+          userinfo: res.data
+        })
+      },
+      fail: function (res) {
+        console.error(res);
       }
+    })
+    _this.setData({
+      time: options.time,
     })
   },
 
@@ -129,11 +114,245 @@ Page({
   onReachBottom: function () {
   
   },
+  join: function(){
+    wx.showLoading({
+      title: '加载中',
+    })
+    var _this = this;
+    var openid = wx.getStorageSync('openid');
+    if (openid == '') {
+      app.openIdReadyCallback = res => {
+        var json = JSON.parse(res.data);
+        openid = json.openid;
+        //判断是否添加个人信息
+        wx.request({
+          url: app.globalData.url + 'apiUserInfo',
+          data: { openid: openid },
+          method: 'POST',
+          success: function (res) {
+            if (res.data.name == "" || res.data.name == "null" || res.data.name == null) {
+              wx.showModal({
+                title: '',
+                content: '请先编辑个人信息',
+                showCancel: false,
+                confirmText: '知道了',
+                success: function (res) {
+                  // wx.reLaunch({
+                  //   url: '../personal/personal',
+                  // })
+                  wx.navigateTo({
+                    url: '../personal/personal',
+                  })
+                }
+              })
+            } else {
+              console.info(_this.data.xiaoyouinfo);
+              //判断是否已经加入此校友会
+              wx.request({
+                url: app.globalData.url + 'apiXiaoyouList',
+                data: { openid: openid },
+                method: 'POST',
+                success: function (res) {
+                  var isexit = true;
+                  for (var i = 0; i < res.data.length; i++) {
+                    if (res.data[i].xiaoyou_id == _this.data.xiaoyouinfo.id) {
+                      isexit = false;
+                      break;
+                    }
+                  }
+                  if (isexit) {
+                    wx.showModal({
+                      title: '',
+                      content: '还没有加入校友会，请先加入该活动所属校友会',
+                      showCancel: false,
+                      confirmText: '知道了',
+                      success: function (res) {
+                        // wx.redirectTo({
+                        //   url: '../personinvit/personinvit?id=' + _this.data.xiaoyouinfo.id + '&userid = ' + _this.data.userinfo.id,
+                        // })
+                        wx.navigateTo({
+                          url: '../personinvit/personinvit?id=' + _this.data.xiaoyouinfo.id + '&userid = ' + _this.data.userinfo.id,
+                        })
+                      }
+                    })
+                  } else {
+                    var data = {
+                      huodong_id: _this.data.activityinfo.id,
+                      openid: openid,
+                      openid_yaoqing: _this.data.userinfo.openid
+                    }
+                    wx.request({
+                      url: app.globalData.url + 'apiBaoming',
+                      data: data,
+                      method: 'POST',
+                      success: function (res) {
+                        wx.hideLoading();
+                        if (res.data == 'isset') {
+                          wx.showModal({
+                            title: '提示',
+                            content: '您已经加入活动，不能重复加入',
+                            confirmText: '知道了',
+                            showCancel: false,
+                            success: function (res) {
+                              if (res.confirm) {
+                                wx.switchTab({
+                                  // url: '../activityinfo/activityinfo?id=' + _this.data.activityinfo.id,
+                                  url: '../activitylist/activitylist',
+                                })
+                              }
+                            }
+                          })
+                        } else if (res.data == 'success') {
+                          wx.showToast({
+                            title: '加入成功',
+                            icon: 'success',
+                            duration: 2000,
+                            success: function (res) {
+                              wx.switchTab({
+                                // url: '../activityinfo/activityinfo?id=' + _this.data.activityinfo.id,
+                                url: '../activitylist/activitylist',
+                              })
+                            }
+                          })
+                        }
+                      },
+                      fail: function (res) {
+                        wx.hideLoading();
+                        console.error(res);
+                      }
+                    })
+                  }
+                },
+                fail: function (res) {
+                  wx.hideLoading();
+                  console.error(res);
+                }
+              })
+            }
+            wx.hideLoading();
+          },
+          fail: function (res) {
+            console.error(res);
+          }
+        })
+      }
+    } else {
+      //判断是否添加个人信息
+      wx.request({
+        url: app.globalData.url + 'apiUserInfo',
+        data: { openid: openid },
+        method: 'POST',
+        success: function (res) {
+          console.info('0000');
+          if (res.data.name == "" || res.data.name == "null" || res.data.name == null) {
+            wx.showModal({
+              title: '',
+              content: '请先编辑个人信息',
+              showCancel: false,
+              confirmText: '知道了',
+              success: function (res) {
+                // wx.reLaunch({
+                //   url: '../personal/personal',
+                // })
+                wx.navigateTo({
+                  url: '../personal/personal',
+                })
+              }
+            })
+          } else {
+            console.info(_this.data.xiaoyouinfo);
+            //判断是否已经加入此校友会
+            wx.request({
+              url: app.globalData.url + 'apiXiaoyouList',
+              data: { openid: openid },
+              method: 'POST',
+              success: function (res) {
+                var isexit = true;
+                for (var i = 0; i < res.data.length; i++) {
+                  if (res.data[i].xiaoyou_id == _this.data.xiaoyouinfo.id) {
+                    isexit = false;
+                    break;
+                  }
+                }
+                if (isexit) {
+                  wx.showModal({
+                    title: '',
+                    content: '还没有加入校友会，请先加入该活动所属校友会',
+                    showCancel: false,
+                    confirmText: '知道了',
+                    success: function (res) {
+                      // wx.redirectTo({
+                      //   url: '../personinvit/personinvit?id=' + _this.data.xiaoyouinfo.id + '&userid=' + _this.data.userinfo.id,
+                      // })
+                      wx.navigateTo({
+                        url: '../personinvit/personinvit?id=' + _this.data.xiaoyouinfo.id + '&userid = ' + _this.data.userinfo.id,
+                      })
+                    }
+                  })
+                }else{
+                  var data = {
+                    huodong_id: _this.data.activityinfo.id,
+                    openid: openid,
+                    openid_yaoqing: _this.data.userinfo.openid
+                  }
+                  wx.request({
+                    url: app.globalData.url + 'apiBaoming',
+                    data: data,
+                    method: 'POST',
+                    success: function(res){
+                      wx.hideLoading();
+                      if (res.data == 'isset'){
+                        wx.showModal({
+                          title: '提示',
+                          content: '您已经加入活动，不能重复加入',
+                          confirmText: '知道了',
+                          showCancel: false,
+                          success: function(res){
+                            if (res.confirm) {
+                              wx.switchTab({
+                                // url: '../activityinfo/activityinfo?id=' + _this.data.activityinfo.id,
+                                url: '../activitylist/activitylist',
+                              })
+                            }
+                          }
+                        })
+                      } else if (res.data == 'success'){
+                        wx.showToast({
+                          title: '加入成功',
+                          icon: 'success',
+                          duration: 2000,
+                          success: function(res){
+                            wx.switchTab({
+                              // url: '../activityinfo/activityinfo?id=' + _this.data.activityinfo.id,
+                              url: '../activitylist/activitylist',
+                            })
+                          }
+                        })
+                      }
+                    },
+                    fail: function(res){
+                      wx.hideLoading();
+                      console.error(res);
+                    }
+                  })
+                }
+              },
+              fail: function (res) {
+                wx.hideLoading();
+                console.error(res);
+              }
+            })
+          }
+          wx.hideLoading();
+        },
+        fail: function (res) {
+          console.error(res);
+        }
+      })
+    }
+    // wx.showLoading({
+    //   title: '加载中',
+    // })
 
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-  
   }
 })

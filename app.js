@@ -1,8 +1,14 @@
 //app.js
 App({
   onLaunch: function (ops) {
+    var _this = this;
+    var isShare = false;
+    console.error(ops);
     if (ops.scene == 1044) {
-      console.log(ops);
+      console.info('onLaunch');
+      console.info(ops.shareTicket);
+        wx.setStorageSync('shareTicket', ops.shareTicket);
+        isShare = true;
     }
     // 展示本地存储能力
     var logs = wx.getStorageSync('logs') || []
@@ -38,9 +44,9 @@ App({
                 data: {openid: _this.globalData.openid},
                 method: 'POST',
                 success: function(res){
-                  if(res.data == 'success'){
+                  if (res.data == 'success' && !isShare){
                     wx.reLaunch({
-                      url: '../personal/personal',
+                      url: '/pages/personal/personal',
                     })
                   }
                 },
@@ -62,7 +68,6 @@ App({
             success: res => {
               // 可以将 res 发送给后台解码出 unionId
               this.globalData.userInfo = res.userInfo
-
               // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
               // 所以此处加入 callback 以防止这种情况
               if (this.userInfoReadyCallback) {
@@ -82,6 +87,8 @@ App({
     url:'https://tianluyangfa.com/xiaoyouhui/public/',
     imgurl:'http://m.tianluyangfa.com/xiaoyouhui/public/images/pic/xiaoyouhui_top.jpeg',
     imgpath:'http://m.tianluyangfa.com/xiaoyouhui/public/uploads/',
-    smallimg: 'http://m.tianluyangfa.com/xiaoyouhui/public/images/smallprogramimg/big.png'
+    smallimg: 'http://m.tianluyangfa.com/xiaoyouhui/public/images/smallprogramimg/big.png',
+    acimg: 'http://m.tianluyangfa.com/xiaoyouhui/public/images/activity/',
+    shareTicket: ''
   }
 })

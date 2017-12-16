@@ -11,13 +11,9 @@ Page {
   height:60px;
   background:#fff;
   border-radius:30px;
-  position:relative;
-  display:flex;
-  flex-direction:row;
-  justify-content:center;
-  align-items:center;
-  margin-top: 40px;
   overflow:hidden;
+  float:right;
+  margin-top: 10px;
 }
 .name {
   display: flex;

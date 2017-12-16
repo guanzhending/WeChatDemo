@@ -39,7 +39,7 @@
             </view>
             <view style='width:23%;padding:10px;'>
               <view style='height:100%;width:100%;'>
-                <image src='{{src}}' mode='{{mode}}' style='height:90px;width:90px;'></image>
+                <image src='{{src}}{{activity.imgsrc}}' mode='{{mode}}' style='height:90px;width:90px;'></image>
               </view>
             </view>
           </view>

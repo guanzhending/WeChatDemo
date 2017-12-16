@@ -90,6 +90,10 @@ Page({
       title: '加载中',
       mask: true
     })
+    this.setData({
+      inputVal: "",
+      inputShowed: false
+    });
     var _this = this;
     var openid = wx.getStorageSync('openid');
     if (openid == '') {
@@ -97,67 +101,100 @@ Page({
         var json = JSON.parse(res.data);
         openid = json.openid;
         wx.request({
-          url: app.globalData.url + 'apiXiaoyouList',
+          url: app.globalData.url + 'apiUserInfo',
           data: { openid: openid },
           method: 'POST',
           success: function (res) {
-            if (res.data == '') {
-              _this.setData({
-                isshow: false,
+            if (res.data.name != "" && res.data.name != "null" && res.data.name != null) {
+              wx.request({
+                url: app.globalData.url + 'apiXiaoyouList',
+                data: { openid: openid },
+                method: 'POST',
+                success: function (res) {
+                  if (res.data == '') {
+                    _this.setData({
+                      isshow: false,
+                    })
+                  } else {
+                    _this.setData({
+                      isshow: true,
+                    })
+                  }
+                  for (var i = 0; i < res.data.length; i++) {
+                    if (res.data[i].schoolinfo != null) {
+                      res.data[i].schoollogo = app.globalData.imgpath + res.data[i].schoolinfo.logo;
+                    } else {
+                      res.data[i].schoollogo = '../../image/1.png';
+                    }
+                  }
+                  _this.setData({
+                    alumnis: res.data,
+                  })
+                  wx.hideLoading();
+                },
+                fail: function (res) {
+                  wx.hideLoading();
+                  console.error(res);
+                }
               })
             } else {
-              _this.setData({
-                isshow: true,
+              wx.reLaunch({
+                url: '../personal/personal',
               })
             }
-            for (var i = 0; i < res.data.length;i++){
-              if (res.data[i].schoolinfo != null){
-                res.data[i].schoollogo = app.globalData.imgpath + res.data[i].schoolinfo.logo;
-              }else{
-                res.data[i].schoollogo = '../../image/1.png';
-              }
-            }
-            _this.setData({
-              alumnis: res.data,
-            })
             wx.hideLoading();
           },
           fail: function (res) {
-            wx.hideLoading();
             console.error(res);
           }
         })
       }
     } else {
       wx.request({
-        url: app.globalData.url + 'apiXiaoyouList',
+        url: app.globalData.url + 'apiUserInfo',
         data: { openid: openid },
         method: 'POST',
         success: function (res) {
-          console.info(res);
-          if (res.data == '') {
-            _this.setData({
-              isshow: false,
+          if (res.data.name != "" && res.data.name != "null" && res.data.name != null) {
+            wx.request({
+              url: app.globalData.url + 'apiXiaoyouList',
+              data: { openid: openid },
+              method: 'POST',
+              success: function (res) {
+                if (res.data == '') {
+                  _this.setData({
+                    isshow: false,
+                  })
+                } else {
+                  _this.setData({
+                    isshow: true,
+                  })
+                }
+                for (var i = 0; i < res.data.length; i++) {
+                  if (res.data[i].schoolinfo != null) {
+                    res.data[i].schoollogo = app.globalData.imgpath + res.data[i].schoolinfo.logo;
+                  } else {
+                    res.data[i].schoollogo = '../../image/1.png';
+                  }
+                }
+                _this.setData({
+                  alumnis: res.data,
+                })
+                wx.hideLoading();
+              },
+              fail: function (res) {
+                wx.hideLoading();
+                console.error(res);
+              }
             })
           } else {
-            _this.setData({
-              isshow: true,
+            wx.reLaunch({
+              url: '../personal/personal',
             })
           }
-          for (var i = 0; i < res.data.length; i++) {
-            if (res.data[i].schoolinfo != null) {
-              res.data[i].schoollogo = app.globalData.imgpath + res.data[i].schoolinfo.logo;
-            } else {
-              res.data[i].schoollogo = '../../image/1.png';
-            }
-          }
-          _this.setData({
-            alumnis: res.data,
-          })
           wx.hideLoading();
         },
         fail: function (res) {
-          wx.hideLoading();
           console.error(res);
         }
       })
@@ -246,7 +283,6 @@ Page({
               res.data[i].schoollogo = '../../image/1.png';
             }
           }
-          console.info(res.data);
           _this.setData({
             alumnis: res.data,
           })

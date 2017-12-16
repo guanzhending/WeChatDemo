@@ -57,13 +57,13 @@
           <view class='acontent'>
             <view class='content'>
               <text style='font-size:10px;'>{{activity.date}}</text>
-              <text style='font-size:25px;font-family:"黑体"'>5</text>
-              <text style='font-size:13px;'>周五</text>
+              <text style='font-size:25px;font-family:"黑体"'>{{activity.day}}</text>
+              <text style='font-size:13px;'>{{activity.week}}</text>
             </view>
             <view class='content2'>
               <view style='display: flex;flex-direction:column;height:100%;width:100%;'>
                 <view class='content2-mes'>
-                  <text style='font-size:16px;color:#333333;'>{{activity.title}}</text>
+                  <text style='font-size:16px;color:#333333;display:block;width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;'>{{activity.title}}</text>
                 </view>
                 <view class='content2-people' style=''>
                   <text style='font-size:12px;color:#999999;'>已有</text>
@@ -77,14 +77,14 @@
                   </view>
                   <view class='message'  style='justify-content: flex-start;'>
                     <text class='time'>地点　</text>
-                    <text class='time'>{{activity.address}}</text>
+                    <text class='time' style='display:block;width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;'>{{activity.address}}</text>
                   </view>
                 </view>
               </view>
             </view>
             <view style='width:23%;padding:10px;'>
               <view style='height:100%;width:100%;'>
-                <image src='{{src}}' mode='{{mode}}' style='height:90px;width:90px;'></image>
+                <image src='{{src}}{{activity.imgsrc}}' mode='{{mode}}' style='height:90px;width:90px;'></image>
               </view>
             </view>
           </view>

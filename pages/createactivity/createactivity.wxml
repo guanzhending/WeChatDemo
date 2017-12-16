@@ -10,7 +10,7 @@
         </view>
         <view class="weui-cell">
           <view class="weui-cell__bd">
-              <textarea class="weui-textarea" placeholder="活动介绍 选填" style="height: 3.3em" name="acinfo" value='{{activityInfo.content}}'/>
+              <textarea class="weui-textarea" placeholder="活动介绍" style="height: 3.3em" name="acinfo" value='{{activityInfo.content}}'/>
           </view>
         </view>
         <view class="weui-cells">
@@ -19,20 +19,14 @@
               <view class="weui-uploader">
                 <view class="weui-uploader__bd">
                   <view class="weui-uploader__files" id="uploaderFiles">
-                      <block wx:for="{{files}}" wx:key="*this">
-                        <view class="weui-uploader__file" bindtap="previewImage" id="{{item}}">
-                            <image class="weui-uploader__img" src="{{item}}" mode="aspectFill" />
-                            <view class="weui-badge"bindtap="delPic" style="position: absolute;bottom: +0.1em;right: +0.1em;">-</view>
+                      <block wx:for="{{files}}" wx:for-item="item" wx:key="*this">
+                        <view class="weui-uploader__file" style='position: relative'>
+                            <image class="weui-uploader__img" src="{{item}}" data-index="{{index}}" mode="aspectFill" bindtap="previewImage"/>
+                            <view class="del_icon" data-index="{{index}}" catchtap="deleteImg"></view>
                         </view>
-                    </block>  
-                     <!-- <block  wx:for="{{files}}" wx:for-items="{{item}}" wx:key="{{index}}">
-                 <view class="weui-uploader__file" id="{{item}}" style="position: relative;margin-right: 10px;">
-                  <image data-url="{{item}}" data-index="{{index}}" class="weui-uploader__img" data-t="maker"  bindtap="previewImage" src="{{item}}" mode="aspectFill" />
-                  <view data-index="{{index}}" class="weui-badge" data-t="maker" bindtap="delPic" style="position: absolute;bottom: +0.1em;right: +0.1em;">-</view>
-                </view>
-              </block>   -->
+                    </block>
                   </view>  
-                  <view class="weui-uploader__input-box">
+                  <view class="weui-uploader__input-box" wx:if="{{files.length <= 0}}">
                       <view class="weui-uploader__input" bindtap="chooseImage"></view>
                   </view>
                 </view>

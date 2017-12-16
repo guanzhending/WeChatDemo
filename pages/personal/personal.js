@@ -33,7 +33,8 @@ Page({
     companyVal: '',
     positionVal: '',
     personalInfoVal: '',
-    addressVal: ''
+    addressVal: '',
+    endDay: ''
   },
 
   /**
@@ -67,102 +68,285 @@ Page({
       })
     }
     var _this = this;
-    wx.request({
-      url: app.globalData.url + 'apiSchool',
-      success: function (res) {
-        var alinfo = res.data;
-        var schoolname = new Array();
-        for (var i = 0; i < res.data.length; i++) {
-          schoolname.push(res.data[i].schoolname);
-        }
-        _this.setData({
-          schoolname: schoolname,
-          alinfo: alinfo
-        });
-      }
-    });
-    wx.request({
-      url: app.globalData.url + '/settingApi/0',
-      success: function (res){
-        var majorname = new Array();
-        for (var i = 0; i < res.data.length; i++) {
-          majorname.push(res.data[i].name);
-        }
-        _this.setData({
-          major: res.data,
-          majorname: majorname
-        });
-      }
-    })
-    wx.request({
-      url: app.globalData.url + '/settingApi/1',
-      success: function (res) {
-        var industryname = new Array();
-        for (var i = 0; i < res.data.length; i++) {
-          industryname.push(res.data[i].name);
-        }
-        _this.setData({
-          industry: res.data,
-          industryname: industryname
-        });
-      }
-    })
-    if (app.globalData.openid !==''){
+    var openid = wx.getStorageSync('openid');
+    if (openid !==''){
       wx.request({
         url: app.globalData.url + 'apiUserInfo',
         data: { openid: app.globalData.openid },
         method: 'POST',
-        success: function (res) {
-          var schoolname = res.data.school_info.schoolname;
-          var schoolindexs = null;
-          for (var i = 0; i < _this.data.schoolname.length; i++){
-            if (_this.data.schoolname[i] == schoolname){
-              schoolindexs = i;
+        success: function (res2) {
+          wx.request({
+            url: app.globalData.url + 'apiSchool',
+            success: function (res) {
+              var alinfo = res.data;
+              var schoolname = new Array();
+              for (var i = 0; i < res.data.length; i++) {
+                schoolname.push(res.data[i].schoolname);
+              }
+              _this.setData({
+                schoolname: schoolname,
+                alinfo: alinfo
+              });
+              wx.request({
+                url: app.globalData.url + '/settingApi/0',
+                success: function (res) {
+                  var majorname = new Array();
+                  for (var i = 0; i < res.data.length; i++) {
+                    majorname.push(res.data[i].name);
+                  }
+                  _this.setData({
+                    major: res.data,
+                    majorname: majorname
+                  });
+                  wx.request({
+                    url: app.globalData.url + '/settingApi/1',
+                    success: function (res) {
+                      var industryname = new Array();
+                      for (var i = 0; i < res.data.length; i++) {
+                        industryname.push(res.data[i].name);
+                      }
+                      _this.setData({
+                        industry: res.data,
+                        industryname: industryname
+                      });
+                      var school_info = res2.data.school_info;
+                      var schoolindexs = null;
+                      if (school_info != null) {
+                        for (var i = 0; i < _this.data.schoolname.length; i++) {
+                          if (_this.data.schoolname[i] == school_info.schoolname) {
+                            schoolindexs = i;
+                          }
+                        }
+                      }
+                      var zhuanye_info = res2.data.zhuanye_info;
+                      var majorindexs = null;
+                      if (zhuanye_info != null) {
+                        for (var j = 0; j < _this.data.majorname.length; j++) {
+                          if (_this.data.majorname[j] == zhuanye_info.name) {
+                            majorindexs = j;
+                          }
+                        }
+                      }
+                      var Educations = res2.data.xueli;
+                      var educationIndexs = null;
+                      if (Educations != null) {
+                        for (var z = 0; z < _this.data.Education.length; z++) {
+                          if (_this.data.Education[z] == Educations) {
+                            educationIndexs = z;
+                          }
+                        }
+                      }
+                      var hangye_info = res2.data.hangye_info;
+                      var industryindexs = null;
+                      if (hangye_info != null) {
+                        for (var a = 0; a < _this.data.industryname.length; a++) {
+                          if (_this.data.industryname[a] == hangye_info.name) {
+                            industryindexs = a;
+                          }
+                        }
+                      }
+                      var myDate = new Date();
+                      var schooltime = res2.data.school_time != null ? res2.data.school_time : '';
+                      var birthday = res2.data.birthday != null ? res2.data.birthday : '';
+                      var endDay = myDate.getFullYear() + '-' + (myDate.getMonth()+1) + '-' + myDate.getDay();
+                      _this.setData({
+                        nameVal: res2.data.name,
+                        telVal: res2.data.tel,
+                        weChatVal: res2.data.wx_number,
+                        schoolIndex: schoolindexs,
+                        majorindex: majorindexs,
+                        educationIndex: educationIndexs,
+                        date: schooltime,
+                        schoolClassVal: res2.data.banji,
+                        companyVal: res2.data.company,
+                        positionVal: res2.data.zhiwei,
+                        industryindex: industryindexs,
+                        personalInfoVal: res2.data.content,
+                        addressVal: res2.data.address,
+                        birthday: birthday,
+                        interestVal: res2.data.aihao,
+                        endDay: endDay
+                      });
+                    }
+                  })
+                }
+              })
             }
-          }
-          var majornames = res.data.zhuanye_info.name;
-          var majorindexs = null;
-          for (var j = 0; j < _this.data.majorname.length; j++) {
-            if (_this.data.majorname[j] == majornames) {
-              majorindexs = j;
-            }
-          }
-          var Educations = res.data.xueli;
-          var educationIndexs = null;
-          for (var z = 0; z < _this.data.Education.length; z++) {
-            if (_this.data.Education[z] == Educations) {
-              educationIndexs = z;
-            }
-          }
-          var industrynames = res.data.hangye_info.name;
-          var industryindexs = null;
-          for (var a = 0; a < _this.data.industryname.length; a++) {
-            if (_this.data.industryname[a] == industrynames) {
-              industryindexs = a;
-            }
-          }
-          _this.setData({
-            nameVal: res.data.name,
-            telVal: res.data.tel,
-            weChatVal: res.data.wx_number,
-            schoolIndex: schoolindexs,
-            majorindex: majorindexs,
-            educationIndex: educationIndexs,
-            date: res.data.school_time,
-            schoolClassVal: res.data.banji,
-            companyVal: res.data.company,
-            positionVal: res.data.zhiwei,
-            industryindex: industryindexs,
-            personalInfoVal: res.data.content,
-            addressVal: res.data.address,
-            birthday: res.data.birthday,
-            interestVal: res.data.aihao
           });
         },
         fail: function (res) {
           console.error(res);
         }
       })
+    }else{
+      app.openIdReadyCallback = res => {
+        var json = JSON.parse(res.data);
+        openid = json.openid;
+        wx.request({
+          url: app.globalData.url + 'apiUserInfo',
+          data: { openid: app.globalData.openid },
+          method: 'POST',
+          success: function (res2) {
+            wx.request({
+              url: app.globalData.url + 'apiSchool',
+              success: function (res) {
+                var alinfo = res.data;
+                var schoolname = new Array();
+                for (var i = 0; i < res.data.length; i++) {
+                  schoolname.push(res.data[i].schoolname);
+                }
+                _this.setData({
+                  schoolname: schoolname,
+                  alinfo: alinfo
+                });
+                wx.request({
+                  url: app.globalData.url + '/settingApi/0',
+                  success: function (res) {
+                    var majorname = new Array();
+                    for (var i = 0; i < res.data.length; i++) {
+                      majorname.push(res.data[i].name);
+                    }
+                    _this.setData({
+                      major: res.data,
+                      majorname: majorname
+                    });
+                    wx.request({
+                      url: app.globalData.url + '/settingApi/1',
+                      success: function (res) {
+                        var industryname = new Array();
+                        for (var i = 0; i < res.data.length; i++) {
+                          industryname.push(res.data[i].name);
+                        }
+                        _this.setData({
+                          industry: res.data,
+                          industryname: industryname
+                        });
+                        var school_info = res2.data.school_info;
+                        var schoolindexs = null;
+                        if (school_info != null) {
+                          for (var i = 0; i < _this.data.schoolname.length; i++) {
+                            if (_this.data.schoolname[i] == school_info.schoolname) {
+                              schoolindexs = i;
+                            }
+                          }
+                        }
+                        var zhuanye_info = res2.data.zhuanye_info;
+                        var majorindexs = null;
+                        if (zhuanye_info != null) {
+                          for (var j = 0; j < _this.data.majorname.length; j++) {
+                            if (_this.data.majorname[j] == zhuanye_info.name) {
+                              majorindexs = j;
+                            }
+                          }
+                        }
+                        var Educations = res2.data.xueli;
+                        var educationIndexs = null;
+                        if (Educations != null) {
+                          for (var z = 0; z < _this.data.Education.length; z++) {
+                            if (_this.data.Education[z] == Educations) {
+                              educationIndexs = z;
+                            }
+                          }
+                        }
+                        var hangye_info = res2.data.hangye_info;
+                        var industryindexs = null;
+                        if (hangye_info != null) {
+                          for (var a = 0; a < _this.data.industryname.length; a++) {
+                            if (_this.data.industryname[a] == hangye_info.name) {
+                              industryindexs = a;
+                            }
+                          }
+                        }
+                        var schooltime = res2.data.school_time != null ? res2.data.school_time : '';
+                        var birthday = res2.data.birthday != null ? res2.data.birthday : '';
+                        var myDate = new Date();
+                        var endDay = myDate.getFullYear() + '-' + (myDate.getMonth() + 1) + '-' + myDate.getDay();
+                        console.info(endDay);
+                        _this.setData({
+                          nameVal: res2.data.name,
+                          telVal: res2.data.tel,
+                          weChatVal: res2.data.wx_number,
+                          schoolIndex: schoolindexs,
+                          majorindex: majorindexs,
+                          educationIndex: educationIndexs,
+                          date: schooltime,
+                          schoolClassVal: res2.data.banji,
+                          companyVal: res2.data.company,
+                          positionVal: res2.data.zhiwei,
+                          industryindex: industryindexs,
+                          personalInfoVal: res2.data.content,
+                          addressVal: res2.data.address,
+                          birthday: birthday,
+                          interestVal: res2.data.aihao,
+                          endDay: endDay
+                        });
+                      }
+                    })
+                  }
+                })
+              }
+            });
+            var school_info = res.data.school_info;
+            var schoolindexs = null;
+            if (school_info != null) {
+              for (var i = 0; i < _this.data.schoolname.length; i++) {
+                if (_this.data.schoolname[i] == school_info.schoolname) {
+                  schoolindexs = i;
+                }
+              }
+            }
+            var zhuanye_info = res.data.zhuanye_info;
+            var majorindexs = null;
+            if (zhuanye_info != null) {
+              for (var j = 0; j < _this.data.majorname.length; j++) {
+                if (_this.data.majorname[j] == zhuanye_info.name) {
+                  majorindexs = j;
+                }
+              }
+            }
+            var Educations = res.data.xueli;
+            var educationIndexs = null;
+            if (Educations != null) {
+              for (var z = 0; z < _this.data.Education.length; z++) {
+                if (_this.data.Education[z] == Educations) {
+                  educationIndexs = z;
+                }
+              }
+            }
+            var hangye_info = res.data.hangye_info;
+            var industryindexs = null;
+            if (hangye_info != null) {
+              for (var a = 0; a < _this.data.industryname.length; a++) {
+                if (_this.data.industryname[a] == hangye_info.name) {
+                  industryindexs = a;
+                }
+              }
+            }
+            var schooltime = res.data.school_time != null ? res.data.school_time : '';
+            var birthday = res.data.birthday != null ? res.data.birthday : '';
+            _this.setData({
+              nameVal: res.data.name,
+              telVal: res.data.tel,
+              weChatVal: res.data.wx_number,
+              schoolIndex: schoolindexs,
+              majorindex: majorindexs,
+              educationIndex: educationIndexs,
+              date: schooltime,
+              schoolClassVal: res.data.banji,
+              companyVal: res.data.company,
+              positionVal: res.data.zhiwei,
+              industryindex: industryindexs,
+              personalInfoVal: res.data.content,
+              addressVal: res.data.address,
+              birthday: birthday,
+              interestVal: res.data.aihao
+            });
+          },
+          fail: function (res) {
+            console.error(res);
+          }
+        })
+      }  
     }
   },
   /**
@@ -269,13 +453,6 @@ Page({
   onReachBottom: function () {
   
   },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-  
-  },
   /**
    * 表单提交
    */
@@ -298,10 +475,55 @@ Page({
       })
       return
     }
+    if (e.detail.value.telPhone == "" || e.detail.value.telPhone == null) {
+      wx.showModal({
+        title: '',
+        content: '您还没有输入手机号码',
+        showCancel: false,
+        confirmText: '知道了'
+      })
+      return
+    }
     if (e.detail.value.schoolId == null) {
       wx.showModal({
         title: '',
         content: '您还没有关联学校',
+        showCancel: false,
+        confirmText: '知道了'
+      })
+      return
+    }
+    if (e.detail.value.majorId == null) {
+      wx.showModal({
+        title: '',
+        content: '您还没有选择专业',
+        showCancel: false,
+        confirmText: '知道了'
+      })
+      return
+    }
+    if (e.detail.value.Education == null) {
+      wx.showModal({
+        title: '',
+        content: '您还没有选择学历',
+        showCancel: false,
+        confirmText: '知道了'
+      })
+      return
+    }
+    if (e.detail.value.schoolOpenTime == null || e.detail.value.schoolOpenTime == '') {
+      wx.showModal({
+        title: '',
+        content: '您还没有选择入学时间',
+        showCancel: false,
+        confirmText: '知道了'
+      })
+      return
+    }
+    if (e.detail.value.schoolClass == "") {
+      wx.showModal({
+        title: '',
+        content: '您还没有输入班级',
         showCancel: false,
         confirmText: '知道了'
       })
@@ -372,7 +594,8 @@ Page({
       content: e.detail.value.personalInfo,
       address: e.detail.value.address,
       birthday: e.detail.value.birthday,
-      aihao: e.detail.value.interest
+      aihao: e.detail.value.interest,
+      headImg: this.data.userInfo.avatarUrl
     }
     wx.showLoading({
       title: '数据加载中',
@@ -390,13 +613,16 @@ Page({
           duration: 2000,
           mask: true
         })
-        wx.switchTab({
-          url: '../visitcard/visitcard',
-          success: function (res) {
-          },
-          fail: function (res) {
-          }
-        })
+        var pagelength = getCurrentPages().length;
+        if (pagelength == 1){
+          wx.switchTab({
+            url: '../alumnilist/alumnilist',
+          })
+        }else{
+          wx.navigateBack({
+            delta: 1
+          })
+        }
       },
       fail: function (res) {
         wx.showToast({

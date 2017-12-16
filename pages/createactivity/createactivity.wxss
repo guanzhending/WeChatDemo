@@ -12,3 +12,12 @@ Page {
   overflow-x: hidden;
   overflow-y: auto;
 }
+.del_icon {
+  background-image: url('http://m.tianluyangfa.com/xiaoyouhui/public/uploads/del.png');
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 20px;
+  height: 20px;
+  background-repeat: no-repeat;
+}

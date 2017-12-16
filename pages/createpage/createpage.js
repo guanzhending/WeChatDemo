@@ -44,6 +44,27 @@ Page({
    */
   onLoad: function (options) {
     var _this = this;
+    var openid = app.globalData.openid;
+    wx.request({
+      url: app.globalData.url + 'apiUserInfo',
+      data: { openid: openid },
+      method: 'POST',
+      success: function (res) {
+        console.info(res);
+        if (res.data.name != "" && res.data.name != "null" && res.data.name != null) {
+          _this.setData({
+            info: res.data
+          })
+        } else {
+          wx.reLaunch({
+            url: '../personal/personal',
+          })
+        }
+      },
+      fail: function (res) {
+        console.error(res);
+      }
+    })
     wx.request({
       url: app.globalData.url +'/apiSchool',
       success:function(res) {
@@ -126,23 +147,6 @@ Page({
    */
   onReachBottom: function () {
   
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function (res) {
-    // return {
-    //   title: '校友会',
-    //   path: 'pages/createpage/createpage',
-    //   success: function (res) {
-    //     // 转发成功
-    //     console.info(res.shareTickets[0]+"+++++++");
-    //   },
-    //   fail: function (res) {
-    //     // 转发失败
-    //   }
-    // }
   },
   bindAgreeChange: function (e) {
     this.setData({

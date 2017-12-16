@@ -19,7 +19,7 @@
     </view>
     <view class="weui-cells searchbar-result" wx:if="{{inputVal.length > 0}}">
       <block wx:for="{{search}}"  wx:for-item="info">
-        <navigator url='../alumnipage/alumnipage?id={{info.id}}' class="weui-cell" hover-class="weui-cell_active">
+        <navigator url='../alumnipage/alumnipage?id={{info.info[0].id}}' class="weui-cell" hover-class="weui-cell_active">
             <view class="weui-cell__bd">
                 <view>{{info.info[0].name}}</view>
             </view>

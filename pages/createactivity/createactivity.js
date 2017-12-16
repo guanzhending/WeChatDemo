@@ -19,7 +19,8 @@ Page({
     tempFilePaths: '',
     realname: "",
     activityInfo: '',
-    activityID: 0
+    activityID: 0,
+    imgsrc: ''
   },
 
   /**
@@ -27,7 +28,6 @@ Page({
    */
   onLoad: function (options) {
     var _this = this;
-    console.info(options);
     var _this=this;
     var country = Array();
     wx.request({
@@ -38,7 +38,6 @@ Page({
         for (var i = 0; i < res.data.length; i++) {
           country.push(res.data[i].info[0].name);
         }
-        console.info(country);
         _this.setData({
           countries: country,
           contryinfo: res.data
@@ -56,6 +55,7 @@ Page({
             data: info,
             method: 'POST',
             success: function (res2) {
+              console.info(res2);
               for (var i = 0; i < res.data.length; i++) {
                 if (res2.data.xiaoyou_id == res.data[i].info[0].id) {
                   _this.setData({
@@ -68,8 +68,14 @@ Page({
                 activityInfo: res2.data,
                 address: res2.data.address,
                 date: res2.data.date,
-                time: res2.data.time
+                time: res2.data.time,
+                realname: res2.data.address
               })
+              if (res2.data.imgsrc != '' && res2.data.imgsrc != null && res2.data.imgsrc != undefined){
+                _this.setData({
+                  files: [app.globalData.acimg + res2.data.imgsrc]
+                })
+              }
             }
           })
         }
@@ -121,22 +127,6 @@ Page({
   onReachBottom: function () {
 
   },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function (res) {
-    return {
-      title: '校友会',
-      path: '/pages/createactivity/createactivity',
-      success: function (res) {
-        // 转发成功
-      },
-      fail: function (res) {
-        // 转发失败
-      }
-    }
-  },
   chooseImage: function (e) {
     var that = this;
     wx.chooseImage({
@@ -145,20 +135,57 @@ Page({
       sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
       success: function (res) {
         console.info(res);
-        console.info('hhha');
         // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
         that.setData({
-          files: that.data.files.concat(res.tempFilePaths)
+          files: that.data.files.concat(res.tempFilePaths[0])
         });
+        console.info(that.data.files[0]);
+        wx.uploadFile({
+          url: app.globalData.url + 'saveImg',//仅为示例，非真实的接口地址
+          filePath: that.data.files[0],
+          name: 'file',
+          success: function (res) {
+            console.info(res);
+            var data = res.data;
+            if(data){
+              var imgs = JSON.parse(data);
+              that.setData({
+                imgsrc: imgs.imgsrc,
+              });
+            }
+            console.info(data);
+            //do something
+          }
+        })
       }
     })
   },
   previewImage: function (e) {
+    // wx.previewImage({
+    //   current: e.currentTarget.id, // 当前显示图片的http链接
+    //   urls: this.data.files // 需要预览的图片http链接列表
+    // })
+    //获取当前图片的下标
+    var index = e.currentTarget.dataset.index;
+    //所有图片
+    var files = this.data.files;
+
     wx.previewImage({
-      current: e.currentTarget.id, // 当前显示图片的http链接
-      urls: this.data.files // 需要预览的图片http链接列表
+      //当前显示图片
+      current: files[index],
+      //所有图片
+      urls: files
     })
   },
+  // 删除图片
+  deleteImg: function (e) {
+    var files = this.data.files;
+    var index = e.currentTarget.dataset.index;
+    files.splice(index, 1);
+    this.setData({
+      files: files
+    });
+  }, 
   bindCountryChange: function (e) {
     this.setData({
       countryIndex: e.detail.value
@@ -215,7 +242,6 @@ Page({
     });
   },
   formSubmit: function (e) {
-    console.log('form发生了submit事件，携带数据为：', e.detail.value);
     if (!this.data.isAgree) {
       wx.showModal({
         title: '',
@@ -271,7 +297,7 @@ Page({
       })
       return
     }
-    if (this.data.address == "" || this.data.address == undefined) {
+    if (this.data.address == "" || this.data.address == undefined || this.data.address == null) {
       wx.showModal({
         title: '',
         content: '您还没有选择活动地址',
@@ -288,7 +314,8 @@ Page({
       xiaoyou_id: acinfo.herd,
       date: acinfo.date,
       time: acinfo.time,
-      openid: app.globalData.openid
+      openid: app.globalData.openid,
+      imgsrc: this.data.imgsrc
     }
     wx.showLoading({
       title: '数据加载中',
@@ -300,28 +327,12 @@ Page({
       method: 'POST',
       success: function (res) {
         wx.hideLoading();
-        // wx.uploadFile({
-        //   url: '',
-        //   filePath: files[0],
-        //   name: 'activityimg',
-        //   success: function(res){
-        //     wx.hideLoading();
         wx.showToast({
           title: '保存成功',
           icon: 'success',
           duration: 2000,
           mask: true
         })
-        // },
-        // fail: function(res){
-        // wx.hideLoading();
-        // wx.showToast({
-        //   title: '保存失败',
-        //   duration: 2000,
-        //   mask: true
-        // })
-        // }
-        // })
         wx.switchTab({
           url: '../activitylist/activitylist',
           success: function (res) {

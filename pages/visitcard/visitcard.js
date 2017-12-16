@@ -35,7 +35,7 @@ Page({
    */
   onShow: function () {
     var _this = this;
-    var openid = app.globalData.openid;
+    var openid = wx.getStorageSync('openid');
     if (openid == '') {
       app.openIdReadyCallback = res => {
         var json = JSON.parse(res.data);
@@ -45,6 +45,7 @@ Page({
           data: { openid: openid },
           method: 'POST',
           success: function (res) {
+            console.info(res);
             if (app.globalData.userInfo) {
               _this.setData({
                 userInfo: app.globalData.userInfo,
@@ -65,7 +66,7 @@ Page({
               })
             } else {
               wx.reLaunch({
-                url: '../../personal/personal',
+                url: '../personal/personal',
               })
             }
             wx.hideLoading();
@@ -81,14 +82,11 @@ Page({
         data: { openid: openid },
         method: 'POST',
         success: function (res) {
-          console.info(res);
           if (app.globalData.userInfo) {
-            console.info(app.globalData.userInfo);
             _this.setData({
               userInfo: app.globalData.userInfo,
             })
           } else {
-            console.info('222');
             wx.getUserInfo({
               success: res => {
                 app.globalData.userInfo = res.userInfo
@@ -98,7 +96,7 @@ Page({
               }
             })
           }
-          if (res.data.name != "") {
+          if (res.data.name != "" && res.data.name != "null" && res.data.name != null) {
             _this.setData({
               info: res.data
             })
@@ -134,7 +132,6 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-    console.info('6666666666')
   },
 
   /**
@@ -148,34 +145,32 @@ Page({
    * 用户点击右上角分享
    */
   onShareAppMessage: function (res) {
-    if (res.from === 'button') {
+    var _this = this;
+    if (res.from == 'button') {
       // 来自页面内转发按钮
-    }
-    return {
-      title: '校友会',
-      path: '/pages/visitcard/visitcard',
-      success: function (res) {
-        // 转发成功
-        // wx.redirectTo({
-        //   url: '../visitcard/visitcard',
-        // })
-      },
-      fail: function (res) {
-        // 转发失败
+      return {
+        title: '校友会',
+        path: 'pages/mycard/mycard?userid=' + _this.data.info.id,
+        success: function (res) {
+          wx.showToast({
+            title: '分享成功',
+            icon: 'success',
+            duration: 1000
+          })
+        },
+        fail: function (res) {
+          wx.showToast({
+            title: '分享失败',
+            icon: 'success',
+            duration: 1000
+          })
+        }
       }
     }
   },
   editCard: function(e){
     wx.navigateTo({
       url: '../personal/personal'
-    })
-  },
-  share: function (e) {
-    wx.showModal({
-      title: '无法分享',
-      content: '请先完善名片内容',
-      showCancel: true,
-      confirmText: '去完善'
     })
   }
 })

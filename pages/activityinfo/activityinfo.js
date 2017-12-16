@@ -6,12 +6,12 @@ Page({
    * 页面的初始数据
    */
   data: {
-    src: app.globalData.imgurl,
-    mode: 'scaleToFill',
+    src: app.globalData.acimg,
+    mode: 'aspectFit',
     applicants: 'ewq',
     activityInfo: '',
     is_baoming: true,
-    is_creater: false
+    is_creater: false,
   },
 
   /**
@@ -93,7 +93,7 @@ Page({
     var _this = this;
     var info = {
       openid: app.globalData.openid,
-      huodong_id: _this.data.activityInfo
+      huodong_id: _this.data.activityInfo.id
     }
     wx.request({
       url: app.globalData.url + 'apiBaoming',
@@ -104,6 +104,31 @@ Page({
           title: '报名成功',
           icon: 'success',
           duration: 2000
+        })
+        var info2 = {
+          openid: app.globalData.openid,
+          id: _this.data.activityInfo.id
+        }
+        wx.request({
+          url: app.globalData.url + 'apiActivityDetail',
+          data: info2,
+          method: 'POST',
+          success: function (res2) {
+            console.info(res2);
+            if (res2.data.is_baoming == 1) {
+              _this.setData({
+                is_baoming: false
+              })
+            }
+            if (app.globalData.openid == res2.data.openid) {
+              _this.setData({
+                is_creater: true
+              })
+            }
+            _this.setData({
+              activityInfo: res2.data
+            })
+          }
         })
       }
     })

@@ -47,7 +47,7 @@
                   <view style='height:60px;padding:15px 20px;'>
                     <view style='position:relative;height:60px;'>
                       <view class='peopleimg'>
-                        <image src='../../image/people.png' class='peopleimg2'>
+                        <image src='{{list11.userinfo.headImg}}' class='peopleimg2'>
                         </image>
                       </view>
                       <view class='info'>
@@ -85,7 +85,7 @@
                   <view style='height:60px;padding:15px 20px;'>
                     <view style='position:relative;height:60px;'>
                       <view class='peopleimg'>
-                        <image src='../../image/people.png' class='peopleimg2'>
+                        <image src='{{list22.userinfo.headImg}}' class='peopleimg2'>
                         </image>
                       </view>
                       <view class='info'>
@@ -123,7 +123,7 @@
                   <view style='height:60px;padding:15px 20px;'>
                     <view style='position:relative;height:60px;'>
                       <view class='peopleimg'>
-                        <image src='../../image/people.png' class='peopleimg2'>
+                        <image src='{{list33.userinfo.headImg}}' class='peopleimg2'>
                         </image>
                       </view>
                       <view class='info'>
