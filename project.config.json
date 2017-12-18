@@ -22,44 +22,7 @@
 		},
 		"miniprogram": {
 			"current": -1,
-			"list": [
-				{
-					"id": 0,
-					"name": "分享",
-					"pathName": "pages/joinactivity/joinactivity",
-					"query": "id=43&userid=24&time=1900/12/12",
-					"scene": "1044",
-					"shareInfo": {
-						"groupName": "测试模拟群8",
-						"shareName": "AWHDtfv4a7cwsZyKfH02HQeehlDMPnYEu4wltlz9cps@cr4dev",
-						"shareKey": "7nevjt_a65BTFlliEgGSaHwr_SRilLPRd2lDv6_1vpd4Au9UX9pm4vIeVldzSIye9t2DBzLN9wIq9fKntinBqw~~"
-					}
-				},
-				{
-					"id": 1,
-					"name": "分享2",
-					"pathName": "pages/personinvit/personinvit",
-					"query": "id=47&userid=24",
-					"scene": "1044",
-					"shareInfo": {
-						"groupName": "测试模拟群1",
-						"shareName": "AWHDtfv4a7cwsZyKfH02HY8zOURSRYB6VIA_iJlYzyQ@cr4dev",
-						"shareKey": "7mDj-4YbViCqHBDlTbljrPabHSg81aedsbeQo0lN9QXITeeM9h9LG27uctTxrNJI7_aHRAWO21X_EpujNe185Q~~"
-					}
-				},
-				{
-					"id": 2,
-					"name": "分享3",
-					"pathName": "pages/mycard/mycard",
-					"query": "userid=17",
-					"scene": "1044",
-					"shareInfo": {
-						"groupName": "测试模拟群8",
-						"shareName": "AWHDtfv4a7cwsZyKfH02HQeehlDMPnYEu4wltlz9cps@cr4dev",
-						"shareKey": "7nevjt_a65BTFlliEgGSaHwr_SRilLPRd2lDv6_1vpd4Au9UX9pm4vIeVldzSIye9t2DBzLN9wIq9fKntinBqw~~"
-					}
-				}
-			]
+			"list": []
 		}
 	}
 }

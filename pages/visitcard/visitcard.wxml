@@ -30,7 +30,7 @@
         </view>
         <view class="weui-cell__bd list">
           <text class='message'>{{info.zhuanye_info.name}}</text>
-          <text class='info'>{{info.school_time}}级 {{info.banji}}</text>
+          <text class='info' style='display:block;width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;'>{{info.school_time}}级 {{info.banji}}</text>
         </view>
       </view>
     </view>
@@ -40,8 +40,8 @@
             <image src="../../image/company2.png" style="margin-right: 15px;vertical-align: middle;width:30px; height: 30px;"></image>
         </view>
         <view class="weui-cell__bd list">
-          <text class='message'>{{info.company}}</text>
-          <text class='info'>{{info.zhiwei}}</text>
+          <text class='message' style='display:block;width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;'>{{info.company}}</text>
+          <text class='info' style='display:block;width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;'>{{info.zhiwei}}</text>
         </view>
       </view>
       <view class="weui-cell" wx:if="{{info.hangye_info.name != null && info.hangye_info.name != ''}}">
@@ -60,7 +60,7 @@
             <image src="../../image/address.png" style="margin-right: 15px;vertical-align: middle;width:30px; height: 30px;"></image>
         </view>
         <view class="weui-cell__bd list">
-          <text class='message'>{{info.address}}</text>
+          <text class='message' style='display:block;width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;'>{{info.address}}</text>
           <text class='info'>地址</text>
         </view>
       </view>
@@ -70,7 +70,7 @@
         </view>
         <view class="weui-cell__bd list">
           <text class='message'>{{info.birthday}}</text>
-          <text class='info'>{{info.aihao}}</text>
+          <text class='info' style='display:block;width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;'>{{info.aihao}}</text>
         </view>
       </view>
     </view>

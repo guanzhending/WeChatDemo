@@ -19,13 +19,11 @@ Page({
    */
   onLoad: function (options) {
     var _this = this;
-    console.info(options);
     wx.request({
       url: app.globalData.url + 'apiActivityDetail',
       data: { id: options.id},
       method: 'POST',
       success: function (res) {
-        console.info(res);
         _this.setData({
           activityinfo: res.data,
         })
@@ -73,7 +71,6 @@ Page({
               _this.setData({
                 info: res.data
               })
-              console.info(res.data);
             } else {
               wx.redirectTo({
                 url: '../personal/personal',
@@ -107,7 +104,6 @@ Page({
             })
           }
           if (res.data.name != "") {
-            console.info(res.data);
             _this.setData({
               info: res.data
             })

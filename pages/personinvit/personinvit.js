@@ -19,10 +19,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    console.info('shareTicket' + wx.getStorageSync('shareTicket'));
-    console.info(options);
     app.onLaunch = res => {}
-    
     if (!app.globalData.userInfo) {
       wx.getUserInfo({
         success: res => {
@@ -46,8 +43,6 @@ Page({
         data: { id: options.userid },
         method: 'POST',
         success: function (res) {
-          console.info('pppppp');
-          console.info(res.data);
           _this.setData({
             userinfo: res.data,
             img: res.data.headImg,
@@ -70,8 +65,8 @@ Page({
   /**
    * 生命周期函数--监听页面显示
    */
-  onShow: function () {
-  
+  onShow: function (ops) {
+
   },
 
   /**
@@ -121,7 +116,6 @@ Page({
           data: { openid: openid },
           method: 'POST',
           success: function (res) {
-            console.info(res.data);
             if (res.data.name == "" || res.data.name == "null" || res.data.name == null) {
               wx.showModal({
                 title: '',
@@ -165,69 +159,84 @@ Page({
                     })
                   } else {
                     //判断是否是从绑定的微信群小卡片跳转过来的用户
-                    if (_this.data.alumniInfo.is_connect == 1 && _this.data.alumniInfo.wx_name != null) {
+                    if (_this.data.alumniInfo.is_connect == 1 && _this.data.alumniInfo.wx_name != null && _this.data.alumniInfo.wx_name != 'null' && _this.data.alumniInfo.wx_name != '') {
                       var shareTicket = wx.getStorageSync('shareTicket');
-                      wx.getShareInfo({
-                        shareTicket: shareTicket,
-                        complete: function (res) {
-                          var updateOpenGId = {
-                            encryptedData: res.encryptedData,
-                            iv: res.iv,
-                            appid: app.globalData.appid,
-                            sessionKey: app.globalData.session_key
-                          }
-                          wx.request({
-                            url: app.globalData.url + 'getopenID',
-                            method: 'POST',
-                            data: updateOpenGId,
-                            success: function (res) {
-                              if (res.data == '-41001' || res.data == '-41002') {
-                                wx.showModal({
-                                  title: '',
-                                  content: '加入失败',
-                                  showCancel: false,
-                                  confirmText: '知道了'
-                                })
-                                return;
-                              }
-                              var openGid = JSON.parse(res.data);
-                              if (openGid.openGId != _this.data.alumniInfo.wx_name) {
-                                wx.showModal({
-                                  title: '',
-                                  content: '您没有权限加入此校友会',
-                                  showCancel: false,
-                                  confirmText: '知道了',
-                                  success: function (res) {
-                                    wx.switchTab({
-                                      url: '../alumnilist/alumnilist',
-                                    })
-                                  }
-                                })
-                              } else {
-                                //加入校友会
-                                var data = {
-                                  openid: openid,
-                                  xiaoyouhui_id: _this.data.alumniInfo.id
+                      if (shareTicket != '') {
+                        wx.checkSession({
+                          success: function () {
+                            wx.getShareInfo({
+                              shareTicket: shareTicket,
+                              complete: function (res) {
+                                var updateOpenGId = {
+                                  encryptedData: res.encryptedData,
+                                  iv: res.iv,
+                                  appid: app.globalData.appid,
+                                  sessionKey: wx.getStorageSync('session_key')
                                 }
                                 wx.request({
-                                  url: app.globalData.url + 'apiEnterXiaoyou',
+                                  url: app.globalData.url + 'getopenID',
                                   method: 'POST',
-                                  data: data,
+                                  data: updateOpenGId,
                                   success: function (res) {
-                                    wx.hideLoading();
-                                    wx.showToast({
-                                      title: '成功',
-                                      icon: 'success',
-                                      duration: 2000,
-                                      success: function (res) {
-                                        // wx.switchTab({
-                                        //   url: '../alumnilist/alumnilist',
-                                        // })
-                                        wx.navigateBack({
-                                          delta: 1
-                                        })
+                                    if (res.data == '-41001' || res.data == '-41002') {
+                                      wx.showModal({
+                                        title: '',
+                                        content: '加入失败',
+                                        showCancel: false,
+                                        confirmText: '知道了'
+                                      })
+                                      return;
+                                    }
+                                    var openGid = JSON.parse(res.data);
+                                    if (openGid.openGId != _this.data.alumniInfo.wx_name) {
+                                      wx.showModal({
+                                        title: '',
+                                        content: '您没有权限加入此校友会',
+                                        showCancel: false,
+                                        confirmText: '知道了',
+                                        success: function (res) {
+                                          wx.switchTab({
+                                            url: '../alumnilist/alumnilist',
+                                          })
+                                        }
+                                      })
+                                    } else {
+                                      //加入校友会
+                                      var data = {
+                                        openid: openid,
+                                        xiaoyou_id: _this.data.alumniInfo.id
                                       }
-                                    })
+                                      wx.request({
+                                        url: app.globalData.url + 'apiEnterXiaoyou',
+                                        method: 'POST',
+                                        data: data,
+                                        success: function (res) {
+                                          wx.hideLoading();
+                                          wx.showToast({
+                                            title: '成功',
+                                            icon: 'success',
+                                            duration: 2000,
+                                            success: function (res) {
+                                              wx.switchTab({
+                                                url: '../alumnilist/alumnilist',
+                                              })
+                                              // wx.navigateBack({
+                                              //   delta: 1
+                                              // })
+                                            }
+                                          })
+                                        },
+                                        fail: function (res) {
+                                          wx.hideLoading();
+                                          wx.showModal({
+                                            title: '',
+                                            content: '加入失败',
+                                            showCancel: false,
+                                            confirmText: '知道了'
+                                          })
+                                        }
+                                      })
+                                    }
                                   },
                                   fail: function (res) {
                                     wx.hideLoading();
@@ -240,10 +249,164 @@ Page({
                                   }
                                 })
                               }
-                            },
-                            fail: function (res) {
-                              console.error(res);
-                            }
+                            })
+                          },
+                          fail: function () {
+                            //登录态过期
+                            wx.login({
+                              success: res => {
+                                wx.request({
+                                  url: app.globalData.url + 'apiCheckLogin/' + res.code,
+                                  success: function (res2) {
+                                    var json = JSON.parse(res2.data);
+                                    var updateOpenGId = {
+                                      alumniId: _this.data.info.id,
+                                      encryptedData: res.encryptedData,
+                                      iv: res.iv,
+                                      appid: app.globalData.appid,
+                                      sessionKey: json.session_key
+                                    }
+                                    wx.request({
+                                      url: app.globalData.url + 'getopenID',
+                                      method: 'POST',
+                                      data: updateOpenGId,
+                                      success: function (res) {
+                                        if (res.data == '-41001' || res.data == '-41002') {
+                                          wx.showModal({
+                                            title: '',
+                                            content: '加入失败',
+                                            showCancel: false,
+                                            confirmText: '知道了'
+                                          })
+                                          return;
+                                        }
+                                        var openGid = JSON.parse(res.data);
+                                        if (openGid.openGId != _this.data.alumniInfo.wx_name) {
+                                          wx.showModal({
+                                            title: '',
+                                            content: '您没有权限加入此校友会,请通过绑定微信群加入校友会',
+                                            showCancel: false,
+                                            confirmText: '知道了',
+                                            success: function (res) {
+                                              wx.switchTab({
+                                                url: '../alumnilist/alumnilist',
+                                              })
+                                            }
+                                          })
+                                        } else {
+                                          //加入校友会
+                                          var data = {
+                                            openid: openid,
+                                            xiaoyou_id: _this.data.alumniInfo.id
+                                          }
+                                          wx.request({
+                                            url: app.globalData.url + 'apiEnterXiaoyou',
+                                            method: 'POST',
+                                            data: data,
+                                            success: function (res) {
+                                              wx.hideLoading();
+                                              wx.showToast({
+                                                title: '成功',
+                                                icon: 'success',
+                                                duration: 2000,
+                                                success: function (res) {
+                                                  wx.switchTab({
+                                                    url: '../alumnilist/alumnilist',
+                                                  })
+                                                  // wx.navigateBack({
+                                                  //   delta: 1
+                                                  // })
+                                                }
+                                              })
+                                            },
+                                            fail: function (res) {
+                                              wx.hideLoading();
+                                              wx.showModal({
+                                                title: '',
+                                                content: '加入失败',
+                                                showCancel: false,
+                                                confirmText: '知道了'
+                                              })
+                                            }
+                                          })
+                                        }
+                                      },
+                                      fail: function (res) {
+                                        wx.showModal({
+                                          title: '',
+                                          content: '加入失败',
+                                          showCancel: false,
+                                          confirmText: '知道了'
+                                        })
+                                      }
+                                    })
+                                  }
+                                })
+                              }
+                            })
+                          }
+                        })
+                      } else {
+                        wx.showModal({
+                          title: '',
+                          content: '加入失败,请通过绑定微信群加入校友会',
+                          showCancel: false,
+                          confirmText: '知道了',
+                          success: function () {
+                            wx.switchTab({
+                              url: '../alumnilist/alumnnilist',
+                            })
+                          }
+                        })
+                      }
+                    } else {
+                      //加入校友会
+                      var data = {
+                        openid: openid,
+                        xiaoyou_id: _this.data.alumniInfo.id
+                      }
+                      wx.request({
+                        url: app.globalData.url + 'apiEnterXiaoyou',
+                        method: 'POST',
+                        data: data,
+                        success: function (res) {
+                          if (res.data != 'error') {
+                            wx.showModal({
+                              title: '',
+                              content: '加入成功！',
+                              showCancel: false,
+                              confirmText: '知道了',
+                              success: function (res) {
+                                wx.switchTab({
+                                  url: '../alumnilist/alumnilist',
+                                })
+                                // wx.navigateBack({
+                                //   delta: 1
+                                // })
+                              }
+                            })
+                          } else {
+                            wx.showModal({
+                              title: '',
+                              content: '加入失败！',
+                              showCancel: false,
+                              confirmText: '知道了',
+                              success: function () {
+                                wx.switchTab({
+                                  url: '../alumnilist/alumnilist',
+                                })
+                              }
+                            })
+                          }
+
+                        },
+                        fail: function (res) {
+                          wx.hideLoading();
+                          wx.showModal({
+                            title: '',
+                            content: '加入失败',
+                            showCancel: false,
+                            confirmText: '知道了'
                           })
                         }
                       })
@@ -252,14 +415,25 @@ Page({
                 },
                 fail: function (res) {
                   wx.hideLoading();
-                  console.error(res);
+                  wx.showModal({
+                    title: '',
+                    content: '加入失败',
+                    showCancel: false,
+                    confirmText: '知道了'
+                  })
                 }
               })
             }
             wx.hideLoading();
           },
           fail: function (res) {
-            console.error(res);
+            wx.hideLoading();
+            wx.showModal({
+              title: '',
+              content: '加入失败',
+              showCancel: false,
+              confirmText: '知道了'
+            })
           }
         })
       }
@@ -270,7 +444,6 @@ Page({
         data: { openid: openid },
         method: 'POST',
         success: function (res) {
-          console.info(res.data);
           if (res.data.name == "" || res.data.name == "null" || res.data.name == null) {
             wx.showModal({
               title: '',
@@ -314,7 +487,7 @@ Page({
                   })
                 } else {
                   //判断是否是从绑定的微信群小卡片跳转过来的用户
-                  if (_this.data.alumniInfo.is_connect == 1 && _this.data.alumniInfo.wx_name != null) {
+                  if (_this.data.alumniInfo.is_connect == 1 && _this.data.alumniInfo.wx_name != null && _this.data.alumniInfo.wx_name != 'null' && _this.data.alumniInfo.wx_name != '') {
                     var shareTicket = wx.getStorageSync('shareTicket');
                     if (shareTicket != ''){
                       wx.checkSession({
@@ -343,19 +516,19 @@ Page({
                                     return;
                                   }
                                   var openGid = JSON.parse(res.data);
-                                  // if (openGid.openGId != _this.data.alumniInfo.wx_name) {
-                                  //   wx.showModal({
-                                  //     title: '',
-                                  //     content: '您没有权限加入此校友会',
-                                  //     showCancel: false,
-                                  //     confirmText: '知道了',
-                                  //     success: function (res) {
-                                  //       wx.switchTab({
-                                  //         url: '../alumnilist/alumnilist',
-                                  //       })
-                                  //     }
-                                  //   })
-                                  // } else {
+                                  if (openGid.openGId != _this.data.alumniInfo.wx_name) {
+                                    wx.showModal({
+                                      title: '',
+                                      content: '您没有权限加入此校友会',
+                                      showCancel: false,
+                                      confirmText: '知道了',
+                                      success: function (res) {
+                                        wx.switchTab({
+                                          url: '../alumnilist/alumnilist',
+                                        })
+                                      }
+                                    })
+                                  } else {
                                     //加入校友会
                                     var data = {
                                       openid: openid,
@@ -372,12 +545,12 @@ Page({
                                           icon: 'success',
                                           duration: 2000,
                                           success: function (res) {
-                                            // wx.switchTab({
-                                            //   url: '../alumnilist/alumnilist',
-                                            // })
-                                            wx.navigateBack({
-                                              delta: 1
+                                            wx.switchTab({
+                                              url: '../alumnilist/alumnilist',
                                             })
+                                            // wx.navigateBack({
+                                            //   delta: 1
+                                            // })
                                           }
                                         })
                                       },
@@ -391,17 +564,114 @@ Page({
                                         })
                                       }
                                     })
-                                  // }
+                                  }
                                 },
                                 fail: function (res) {
-                                  console.error(res);
+                                  wx.hideLoading();
+                                  wx.showModal({
+                                    title: '',
+                                    content: '加入失败',
+                                    showCancel: false,
+                                    confirmText: '知道了'
+                                  })
                                 }
                               })
                             }
                           })
                         },
                         fail: function(){
-
+                          //登录态过期
+                          wx.login({
+                            success: res => {
+                              wx.request({
+                                url: app.globalData.url + 'apiCheckLogin/' + res.code,
+                                success: function (res2) {
+                                  var json = JSON.parse(res2.data);
+                                  var updateOpenGId = {
+                                    alumniId: _this.data.info.id,
+                                    encryptedData: res.encryptedData,
+                                    iv: res.iv,
+                                    appid: app.globalData.appid,
+                                    sessionKey: json.session_key
+                                  }
+                                  wx.request({
+                                    url: app.globalData.url + 'getopenID',
+                                    method: 'POST',
+                                    data: updateOpenGId,
+                                    success: function (res) {
+                                      if (res.data == '-41001' || res.data == '-41002') {
+                                        wx.showModal({
+                                          title: '',
+                                          content: '加入失败',
+                                          showCancel: false,
+                                          confirmText: '知道了'
+                                        })
+                                        return;
+                                      }
+                                      var openGid = JSON.parse(res.data);
+                                      if (openGid.openGId != _this.data.alumniInfo.wx_name) {
+                                        wx.showModal({
+                                          title: '',
+                                          content: '您没有权限加入此校友会',
+                                          showCancel: false,
+                                          confirmText: '知道了',
+                                          success: function (res) {
+                                            wx.switchTab({
+                                              url: '../alumnilist/alumnilist',
+                                            })
+                                          }
+                                        })
+                                      } else {
+                                        //加入校友会
+                                        var data = {
+                                          openid: openid,
+                                          xiaoyou_id: _this.data.alumniInfo.id
+                                        }
+                                        wx.request({
+                                          url: app.globalData.url + 'apiEnterXiaoyou',
+                                          method: 'POST',
+                                          data: data,
+                                          success: function (res) {
+                                            wx.hideLoading();
+                                            wx.showToast({
+                                              title: '成功',
+                                              icon: 'success',
+                                              duration: 2000,
+                                              success: function (res) {
+                                                wx.switchTab({
+                                                  url: '../alumnilist/alumnilist',
+                                                })
+                                                // wx.navigateBack({
+                                                //   delta: 1
+                                                // })
+                                              }
+                                            })
+                                          },
+                                          fail: function (res) {
+                                            wx.hideLoading();
+                                            wx.showModal({
+                                              title: '',
+                                              content: '加入失败',
+                                              showCancel: false,
+                                              confirmText: '知道了'
+                                            })
+                                          }
+                                        })
+                                      }
+                                    },
+                                    fail: function (res) {
+                                      wx.showModal({
+                                        title: '',
+                                        content: '加入失败',
+                                        showCancel: false,
+                                        confirmText: '知道了'
+                                      })
+                                    }
+                                  })
+                                }
+                              })
+                            }
+                          })
                         }
                       })  
                     }else{
@@ -418,7 +688,6 @@ Page({
                       })
                     }
                   }else{
-                    console.info('alumni' + _this.data.alumniInfo.id);
                     //加入校友会
                     var data = {
                       openid: openid,
@@ -429,7 +698,6 @@ Page({
                       method: 'POST',
                       data: data,
                       success: function (res) {
-                        console.info(res);
                         if(res.data != 'error'){
                           wx.showModal({
                             title: '',
@@ -437,12 +705,12 @@ Page({
                             showCancel: false,
                             confirmText: '知道了',
                             success: function (res) {
-                              // wx.switchTab({
-                              //   url: '../alumnilist/alumnilist',
-                              // })
-                              wx.navigateBack({
-                                delta: 1
+                              wx.switchTab({
+                                url: '../alumnilist/alumnilist',
                               })
+                              // wx.navigateBack({
+                              //   delta: 1
+                              // })
                             }
                           })
                         }else{
@@ -475,14 +743,25 @@ Page({
               },
               fail: function (res) {
                 wx.hideLoading();
-                console.error(res);
+                wx.showModal({
+                  title: '',
+                  content: '加入失败',
+                  showCancel: false,
+                  confirmText: '知道了'
+                })
               }
             })
           }
           wx.hideLoading();
         },
         fail: function (res) {
-          console.error(res);
+          wx.hideLoading();
+          wx.showModal({
+            title: '',
+            content: '加入失败',
+            showCancel: false,
+            confirmText: '知道了'
+          })
         }
       })
     }

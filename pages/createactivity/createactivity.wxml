@@ -5,12 +5,12 @@
       <view class="weui-cells weui-cells_after-title">
         <view class="weui-cell weui-cell_input" style='padding:0px 20px;'>
             <view class="weui-cell__bd">
-                <input class="weui-input" placeholder="活动标题" name="actitle" value='{{activityInfo.title}}'/>
+                <input class="weui-input" placeholder="活动标题（最多20字）" maxlength='20' name="actitle" value='{{activityInfo.title}}'/>
             </view>
         </view>
         <view class="weui-cell">
           <view class="weui-cell__bd">
-              <textarea class="weui-textarea" placeholder="活动介绍" style="height: 3.3em" name="acinfo" value='{{activityInfo.content}}'/>
+              <textarea class="weui-textarea" placeholder="活动介绍（最多200字）" maxlength='200' style="height: 3.3em" name="acinfo" value='{{activityInfo.content}}'/>
           </view>
         </view>
         <view class="weui-cells">

@@ -44,7 +44,10 @@
               <view style='font-size:12px;color:#999999;'>人加入</view>
             </view>
             <view style='font-size:10px;color:#00A0FF;' wx:if="{{alumni.new_activity}}">最新活动：</view>
-            <view style='font-size:12px;color:#999999;'  wx:if="{{alumni.new_activity}}">{{alumni.new_activity.title}} {{alumni.new_activity_number}}人响应</view>
+            <view style='font-size:12px;color:#999999;line-height:12px;margin-top:5px;' wx:if="{{alumni.new_activity}}">
+              <text style='display:inline-block;max-width:140px;;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;'>{{alumni.new_activity.title}}</text>
+              <text style='display:inline-block;' decode="{{true}}">&nbsp;&nbsp;{{alumni.new_activity_number}}人响应</text>
+            </view>
           </view>
         </view>
       </view>

@@ -34,7 +34,6 @@ Page({
     wx.request({
       url: app.globalData.url + 'apiXiaoyouhuiDetail/'+options.id,
       success:function(res){
-        console.info(res);
         if (app.globalData.openid){
           if (app.globalData.openid == res.data.add_user){
             _this.setData({
@@ -136,15 +135,12 @@ Page({
     })
     if (res.from === 'button') {
       // 来自页面内转发按钮
-      console.log(res)
     }
-    console.info(_this.data.info);
     var path = 'pages/personinvit/personinvit?id=' + _this.data.info.id + '&userid=' + _this.data.info.userinfo.id;
     return {
       title: '邀请函',
       path: path,
       success: function (res) {
-        console.info('分享成功');
         if (_this.data.info.is_connect == 1) {
           if (res.errMsg == 'shareAppMessage:ok') {
             wx.getShareInfo({
@@ -161,13 +157,11 @@ Page({
                       appid: app.globalData.appid,
                       sessionKey: sessionKey
                     }
-                    console.info(updateOpenGId);
                     wx.request({
                       url: app.globalData.url + 'getOpenGid',
                       method: 'POST',
                       data: updateOpenGId,
                       success: function (res) {
-                        console.info(res);
                         if (res.data == 'isbuild') {
                           wx.showModal({
                             title: '绑定结果',
@@ -184,6 +178,11 @@ Page({
                             confirmText: '知道了'
                           })
                         }
+                        wx.showToast({
+                          title: '绑定成功',
+                          icon: 'success',
+                          duration: 2000
+                        })
                       },
                       fail: function (res) {
                         console.error(res);
@@ -210,7 +209,6 @@ Page({
                               method: 'POST',
                               data: updateOpenGId,
                               success: function (res) {
-                                console.info(res + 'fail');
                                 if (res.data == 'isbuild') {
                                   wx.showModal({
                                     title: '绑定结果',
@@ -227,9 +225,20 @@ Page({
                                     confirmText: '知道了'
                                   })
                                 }
+                                wx.showToast({
+                                  title: '绑定成功',
+                                  icon: 'success',
+                                  duration: 2000
+                                })
                               },
                               fail: function (res) {
                                 console.error(res);
+                                wx.showModal({
+                                  title: '绑定结果',
+                                  content: '绑定微信群失败',
+                                  showCancel: false,
+                                  confirmText: '知道了'
+                                })
                               }
                             })
                           }
@@ -241,6 +250,12 @@ Page({
               }
             })
           }
+        }else{
+          wx.showToast({
+            title: '分享成功',
+            icon: 'success',
+            duration: 2000
+          })
         }
       },
       fail: function (res) {
@@ -302,7 +317,6 @@ Page({
             }
           })
         } else if (res.cancel) {
-          console.log('用户点击取消')
         }
       }
     })

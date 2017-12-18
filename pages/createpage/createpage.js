@@ -8,20 +8,25 @@ Page({
   data: {
     src: '../../image/1.png',
     mode: 'scaleToFill', 
-    isAgree: false,
+    isAgree: true,
     schoolname: [],
     alinfo: [],
     schoolIndex: null,
     address: '',
     region: [],
     isconnect: 0,
-    alumniInfo: ''
+    alumniInfo: '',
+    alumniname: '',
+    alumnidetail: '',
+    is_connect: false,
+    invitnum: '',
+    alumniid: '',
+    wx_name: ''
   },
   bindRegionChange: function (e) {
     this.setData({
       region: e.detail.value
     })
-    console.info(e.detail.value);
   },
   /**
    * 关联学校select
@@ -50,7 +55,6 @@ Page({
       data: { openid: openid },
       method: 'POST',
       success: function (res) {
-        console.info(res);
         if (res.data.name != "" && res.data.name != "null" && res.data.name != null) {
           _this.setData({
             info: res.data
@@ -69,7 +73,6 @@ Page({
       url: app.globalData.url +'/apiSchool',
       success:function(res) {
         var alinfo = res.data;
-        console.info(alinfo);
         var schoolname = new Array();
         for (var i = 0; i < alinfo.length;i++){
           schoolname.push(res.data[i].schoolname);
@@ -79,10 +82,12 @@ Page({
           alinfo: alinfo
         });
         if(options.id){
+          _this.setData({
+            alumniid: options.id,
+          })
           wx.request({
             url: app.globalData.url + 'apiXiaoyouhuiDetail/' + options.id,
             success: function(res){
-              console.info(res.data);
               var area = new Array();
               area = res.data.area.split(" ");
               for (var i = 0; i < alinfo.length; i++) {
@@ -93,13 +98,15 @@ Page({
                   break;
                 }
               }
-              
-              var info = {
+              var is_connect = res.data.is_connect == '1' ?true:false;
+              _this.setData({
                 alumniname: res.data.name,
                 region: area,
                 alumnidetail: res.data.content,
-                is_connect: res.data.is_connect,
-              }
+                is_connect: is_connect,
+                invitnum: '170512',
+                wx_name: res.data.wx_name
+              })
             }
           })
         }
@@ -154,7 +161,6 @@ Page({
     });
   },
   relationWeiChat: function (e) {
-    console.info(e.detail);
     if (e.detail.value){
       wx.showModal({
         title: '',
@@ -217,46 +223,141 @@ Page({
       })
       return
     }
+    if (e.detail.value.invite == "") {
+      wx.showModal({
+        title: '',
+        content: '请输入邀请码',
+        showCancel: false,
+        confirmText: '知道了'
+      })
+      return
+    }
+    if (e.detail.value.invite != "170512") {
+      wx.showModal({
+        title: '',
+        content: '邀请码错误，请联系管理员',
+        showCancel: false,
+        confirmText: '知道了'
+      })
+      return
+    }
     var cityString = '';
     for (var i = 0; i < e.detail.value.citys.length; i++){
       cityString += e.detail.value.citys[i] + ' ';
     }
-    var alinfo = {
-      name: e.detail.value.alname,
-      school_id: this.data.alinfo[this.data.schoolIndex].id,
-      area: cityString,
-      content: e.detail.value.alumnidetail,
-      add_user: app.globalData.openid,
-      wx_name: '',
-      is_connect: this.data.isconnect
+    var alinfo = '';
+    if (this.data.alumniid != ''){
+      if (this.data.isconnect == 1){
+        if (this.data.wx_name == null || this.data.wx_name == 'null'){
+          alinfo = {
+            id: this.data.alumniid,
+            name: e.detail.value.alname,
+            school_id: this.data.alinfo[this.data.schoolIndex].id,
+            area: cityString,
+            content: e.detail.value.alumnidetail,
+            is_connect: this.data.isconnect
+          }
+        }else{
+          alinfo = {
+            id: this.data.alumniid,
+            name: e.detail.value.alname,
+            school_id: this.data.alinfo[this.data.schoolIndex].id,
+            area: cityString,
+            content: e.detail.value.alumnidetail,
+            wx_name: this.data.wx_name,
+            is_connect: this.data.isconnect
+          }
+      }
+    }else{
+        alinfo = {
+          id: this.data.alumniid,
+          name: e.detail.value.alname,
+          school_id: this.data.alinfo[this.data.schoolIndex].id,
+          area: cityString,
+          wx_name: '',
+          content: e.detail.value.alumnidetail,
+          is_connect: this.data.isconnect
+        }
     }
-    wx.showLoading({
-      title: '数据加载中',
-      mask:true
-    });
-    wx.request({
-      url: app.globalData.url + '/apiAddXiaoyou',
-      data: alinfo,
-      success:function(option){
+      wx.showLoading({
+        title: '数据加载中',
+        mask: true
+      });
+      wx.request({
+        url: app.globalData.url + '/apiAddXiaoyou',
+        data: alinfo,
+        success: function (option) {
+          wx.showToast({
+            title: '更新成功',
+            icon: 'success',
+            duration: 2000
+          })
+          wx.navigateBack({
+            delta: 1
+          })
+          // console.info(option.data);
+          // wx.redirectTo({
+          //   url: '/pages/alumnipage/alumnipage?id=' + option.data,
+          //   success: function (res) {
+          //     wx.hideLoading();
+          //   },
+          //   fail: function (res) {
+          //     console.info(res);
+          //   }
+          // })
+        },
+        fail: function () {
+          wx.showModal({
+            title: '',
+            content: '创建失败',
+            showCancel: false,
+            confirmText: '知道了'
+          })
+          return
+        }
+      })
+    }else{
+      alinfo = {
+        name: e.detail.value.alname,
+        school_id: this.data.alinfo[this.data.schoolIndex].id,
+        area: cityString,
+        content: e.detail.value.alumnidetail,
+        add_user: app.globalData.openid,
+        is_connect: this.data.isconnect
+      }
+      wx.showLoading({
+        title: '数据加载中',
+        mask: true
+      });
+      wx.request({
+        url: app.globalData.url + '/apiAddXiaoyou',
+        data: alinfo,
+        success: function (option) {
+          wx.showToast({
+            title: '创建成功',
+            icon: 'success',
+            duration: 2000
+          })
           wx.redirectTo({
             url: '/pages/alumnipage/alumnipage?id=' + option.data,
-            success:function(res){
+            success: function (res) {
               wx.hideLoading();
             },
-            fail:function(res){
+            fail: function (res) {
               console.info(res);
             }
           })
-      },
-      fail:function(){
-        wx.showModal({
-          title: '',
-          content: '创建失败',
-          showCancel: false,
-          confirmText: '知道了'
-        })
-        return
-      }
-    })
+        },
+        fail: function () {
+          wx.showModal({
+            title: '',
+            content: '创建失败',
+            showCancel: false,
+            confirmText: '知道了'
+          })
+          return
+        }
+      })
+    }
   }
 })

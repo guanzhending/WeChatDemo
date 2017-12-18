@@ -3,10 +3,7 @@ App({
   onLaunch: function (ops) {
     var _this = this;
     var isShare = false;
-    console.error(ops);
     if (ops.scene == 1044) {
-      console.info('onLaunch');
-      console.info(ops.shareTicket);
         wx.setStorageSync('shareTicket', ops.shareTicket);
         isShare = true;
     }
@@ -44,11 +41,6 @@ App({
                 data: {openid: _this.globalData.openid},
                 method: 'POST',
                 success: function(res){
-                  if (res.data == 'success' && !isShare){
-                    wx.reLaunch({
-                      url: '/pages/personal/personal',
-                    })
-                  }
                 },
                 fail: function(res){
                   console.error(res);
@@ -78,6 +70,11 @@ App({
         }
       }
     })
+  },
+  onShow: function(ops){
+    if (ops.scene == 1044) {
+      wx.setStorageSync('shareTicket', ops.shareTicket);
+    }
   },
   globalData: {
     openid:'',

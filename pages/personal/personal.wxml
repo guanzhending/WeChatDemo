@@ -17,7 +17,7 @@
             </view>
           </view>
           <view class="weui-cell__bd">
-              <input class="weui-input" placeholder="请输入名字" style='text-align:right;' name="name" value='{{nameVal}}'/>
+              <input class="weui-input" placeholder="请输入名字（最多6字）" style='text-align:right;' name="name" value='{{nameVal}}'/>
           </view>
         </view>
         <view class="weui-cell weui-cell_input">
@@ -35,7 +35,7 @@
             <view class="weui-label">微信</view>
           </view>
           <view class="weui-cell__bd">
-              <input class="weui-input" placeholder="请输入微信号" style='text-align:right;' name="weChatId" value='{{weChatVal}}'/>
+              <input class="weui-input" placeholder="请输入微信号（最多30字）" maxlength='30' style='text-align:right;' name="weChatId" value='{{weChatVal}}'/>
           </view>
         </view>
       </view>
@@ -96,7 +96,7 @@
               </view>
           </view>
           <view class="weui-cell__bd">
-              <input class="weui-input" placeholder="请输入班级" style='text-align:right;' name="schoolClass" value='{{schoolClassVal}}'/>
+              <input class="weui-input" placeholder="请输入班级（最多12字）" maxlength='12' style='text-align:right;' name="schoolClass" value='{{schoolClassVal}}'/>
           </view>
         </view>
       </view>
@@ -109,7 +109,7 @@
             </view>
           </view>
           <view class="weui-cell__bd">
-              <input class="weui-input" placeholder="当前在职公司名称" style='text-align:right;' name="company" value='{{companyVal}}'/>
+              <input class="weui-input" placeholder="当前在职公司名称（最多20字）" maxlength='20' style='text-align:right;' name="company" value='{{companyVal}}'/>
           </view>
         </view>
         <view class="weui-cell weui-cell_input">
@@ -119,7 +119,7 @@
             </view>
           </view>
           <view class="weui-cell__bd">
-              <input class="weui-input" placeholder="从事的职位" style='text-align:right;' name="positon" value='{{positionVal}}'/>
+              <input class="weui-input" placeholder="从事的职位（最多10字）" maxlength='10' style='text-align:right;' name="positon" value='{{positionVal}}'/>
           </view>
         </view>
         <view class="weui-cell weui-cell_select">
@@ -137,7 +137,7 @@
         <view class="weui-cells weui-cells_after-title">
             <view class="weui-cell">
                 <view class="weui-cell__bd">
-                    <textarea class="weui-textarea" placeholder="个人介绍" style="height: 3.3em" name="personalInfo" value='{{personalInfoVal}}'/>
+                    <textarea class="weui-textarea" placeholder="个人介绍（最多100字）" maxlength='100' style="height: 3.3em" name="personalInfo" value='{{personalInfoVal}}'/>
                 </view>
             </view>
         </view>
@@ -151,7 +151,7 @@
             </view>
           </view>
           <view class="weui-cell__bd">
-              <input class="weui-input" placeholder="请输入地址" style='text-align:right;' name="address" value='{{addressVal}}'/>
+              <input class="weui-input" placeholder="请输入地址（最多20字）" maxlength='20' style='text-align:right;' name="address" value='{{addressVal}}'/>
           </view>
         </view>
         <view class="weui-cell weui-cell_select">
@@ -169,7 +169,7 @@
             <view class="weui-label">爱好</view>
           </view>
           <view class="weui-cell__bd">
-              <input class="weui-input" style='text-align:right;' name="interest" value='{{interestVal}}'/>
+              <input class="weui-input" style='text-align:right;' placeholder="请输入爱好（最多50字）" maxlength='50' name="interest" value='{{interestVal}}'/>
           </view>
         </view>
       </view>

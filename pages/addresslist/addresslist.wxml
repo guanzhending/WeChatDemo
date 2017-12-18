@@ -62,7 +62,7 @@
                             </block>
                           </view>
                         </view>
-                        <view class='info_work'>{{list11.userinfo.company}} {{list11.userinfo.zhiwei}}</view>
+                        <view class='info_work' style='display:block;width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;'>{{list11.userinfo.company}} {{list11.userinfo.zhiwei}}</view>
                       </view>
                       <view class='right_img'>
                         <image src='../../image/right.png' class='right_img2'></image>
@@ -100,7 +100,7 @@
                             </block>
                           </view>
                         </view>
-                        <view class='info_work'>{{list22.userinfo.school_time}} {{list22.userinfo.banji}}</view>
+                        <view class='info_work' style='display:block;width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;'>{{list22.userinfo.school_time}} {{list22.userinfo.banji}}</view>
                       </view>
                       <view class='right_img'>
                         <image src='../../image/right.png' class='right_img2'></image>
@@ -138,7 +138,7 @@
                             </block>
                           </view>
                         </view>
-                        <view class='info_work'>{{list33.userinfo.banji}}</view>
+                        <view class='info_work' style='display:block;width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;'>{{list33.userinfo.banji}}</view>
                       </view>
                       <view class='right_img'>
                         <image src='../../image/right.png' class='right_img2'></image>

@@ -45,7 +45,6 @@ Page({
           data: { openid: openid },
           method: 'POST',
           success: function (res) {
-            console.info(res);
             if (app.globalData.userInfo) {
               _this.setData({
                 userInfo: app.globalData.userInfo,

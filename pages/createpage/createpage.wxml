@@ -10,7 +10,7 @@
               <view class="weui-label">校友会名称</view>
           </view>
           <view class="weui-cell__bd">
-              <input class="weui-input" name="alname" style='text-align:right;'/>
+              <input class="weui-input" name="alname" value='{{alumniname}}' style='text-align:right;' maxlength='20' placeholder='最多20字'/>
           </view>
         </view>
         <view class="weui-cell weui-cell_select">
@@ -39,14 +39,14 @@
       <view class="weui-cells weui-cells_after-title">
             <view class="weui-cell">
                 <view class="weui-cell__bd">
-                    <textarea class="weui-textarea" placeholder="校友会介绍" style="height: 3.3em;color:#000000;" name="alumnidetail"/>
+                    <textarea class="weui-textarea" placeholder="校友会介绍（最多200字）" style="height: 3.3em;color:#000000;" name="alumnidetail" maxlength='200' value='{{alumnidetail}}'/>
                 </view>
             </view>
       </view>
       <view class="weui-cells weui-cells_after-title">
           <view class="weui-cell weui-cell_input">
               <view class="weui-cell__bd">
-                  <input class="weui-input" placeholder="请输入6位邀请码" name="invite" style='color:#666666;'/>
+                  <input class="weui-input" placeholder="请输入6位邀请码" maxlength='6' name="invite" style='color:#666666;'  type='number' value='{{invitnum}}'/>
               </view>
           </view>
       </view>
@@ -55,7 +55,7 @@
           <view class="weui-cell weui-cell_switch" >
               <view class="weui-cell__bd" style='color:#666666;'>关联指定微信群</view>
               <view class="weui-cell__ft">
-                  <switch bindchange="relationWeiChat" name="group" id="swich" />
+                  <switch bindchange="relationWeiChat" name="group" id="swich" checked='{{is_connect}}'/>
               </view>
           </view>
       </view>

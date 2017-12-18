@@ -24,7 +24,7 @@ Page({
     educationIndex: null,
     date: '',
     birthday: '',
-    isAgree: false,
+    isAgree: true,
     interestVal: '',
     nameVal: '',
     telVal: '',
@@ -261,7 +261,6 @@ Page({
                         var birthday = res2.data.birthday != null ? res2.data.birthday : '';
                         var myDate = new Date();
                         var endDay = myDate.getFullYear() + '-' + (myDate.getMonth() + 1) + '-' + myDate.getDay();
-                        console.info(endDay);
                         _this.setData({
                           nameVal: res2.data.name,
                           telVal: res2.data.tel,
@@ -470,6 +469,15 @@ Page({
       wx.showModal({
         title: '',
         content: '您还没有输入名字',
+        showCancel: false,
+        confirmText: '知道了'
+      })
+      return
+    }
+    if (e.detail.value.name.length > 6) {
+      wx.showModal({
+        title: '',
+        content: '请输入6字以内的名字',
         showCancel: false,
         confirmText: '知道了'
       })

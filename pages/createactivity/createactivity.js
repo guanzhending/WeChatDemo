@@ -15,7 +15,7 @@ Page({
     date: "",
     time: "",
     address: "",
-    isAgree: false,
+    isAgree: true,
     tempFilePaths: '',
     realname: "",
     activityInfo: '',
@@ -55,7 +55,6 @@ Page({
             data: info,
             method: 'POST',
             success: function (res2) {
-              console.info(res2);
               for (var i = 0; i < res.data.length; i++) {
                 if (res2.data.xiaoyou_id == res.data[i].info[0].id) {
                   _this.setData({
@@ -134,18 +133,15 @@ Page({
       sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
       sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
       success: function (res) {
-        console.info(res);
         // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
         that.setData({
           files: that.data.files.concat(res.tempFilePaths[0])
         });
-        console.info(that.data.files[0]);
         wx.uploadFile({
           url: app.globalData.url + 'saveImg',//仅为示例，非真实的接口地址
           filePath: that.data.files[0],
           name: 'file',
           success: function (res) {
-            console.info(res);
             var data = res.data;
             if(data){
               var imgs = JSON.parse(data);
@@ -153,7 +149,6 @@ Page({
                 imgsrc: imgs.imgsrc,
               });
             }
-            console.info(data);
             //do something
           }
         })
@@ -292,6 +287,15 @@ Page({
       wx.showModal({
         title: '',
         content: '您还没有选择活动时间',
+        showCancel: false,
+        confirmText: '知道了'
+      })
+      return
+    }
+    if (this.data.files.length == 0) {
+      wx.showModal({
+        title: '',
+        content: '您还没有添加图片',
         showCancel: false,
         confirmText: '知道了'
       })

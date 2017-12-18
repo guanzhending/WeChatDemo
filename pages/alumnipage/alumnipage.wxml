@@ -97,13 +97,13 @@
     <view style='padding:0px 15px;margin-top:15px;'>
       <button class="weui-btn" type="primary" style='background-color:#2ebd59;' open-type="share">分享校友会</button>
     </view>
-    <!-- <block wx:if="{{iscreater}}"> -->
-      <!-- <view style='padding:0px 15px;margin-top:15px;'>
+     <block wx:if="{{iscreater}}"> 
+       <view style='padding:0px 15px;margin-top:15px;'>
         <button class="weui-btn" type="default" bindtap="edit">编辑校友会</button>
-      </view> -->
+      </view> 
       <view style='padding:0px 15px 15px 15px;margin-top:15px;' wx:if="{{iscreater}}">
         <button class="weui-btn" type="default" bindtap="deleted">删除校友会</button>
       </view>
-    <!-- </block> -->
+     </block> 
   </view>
 </view>

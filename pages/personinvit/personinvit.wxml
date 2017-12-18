@@ -27,15 +27,15 @@
           </view>
           <view style='height:100%;width:80%;' class='personinfo3'>
             <view style='margin-left:10px;height:100%;'>
-              <view style='height:30%;color:#000000;font-size:20px;'>
+              <view style='color:#000000;font-size:17px;'>
                 <text style='height:100%;'>{{userinfo.name}}</text>
               </view>
-              <view style='height:25%;'>
-                <text style='color:#A9A9A9;font-size:15px;'>{{userinfo.zhuanye_info.name}} {{userinfo.banji}}</text>
+              <view style=''>
+                <text style='color:#A9A9A9;font-size:15px;display:inline-block;max-width:180px;;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;'>{{userinfo.zhuanye_info.name}} {{userinfo.banji}}</text>
               </view>
-              <view>
-                <text style='color:#A9A9A9;font-size:15px;'>邀请你加入</text>
-                <text style='color:#00A0FF;font-size:15px;'>{{alumniInfo.name}}</text>
+              <view style='font-size:15px;line-height:15px;'>
+                <text style='color:#A9A9A9;'>邀请你加入</text>
+                <text style='color:#00A0FF;display:inline-block;max-width:140px;;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;'>{{alumniInfo.name}}</text>
               </view>
             </view>
           </view>

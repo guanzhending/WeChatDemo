@@ -114,7 +114,6 @@ Page({
           data: info2,
           method: 'POST',
           success: function (res2) {
-            console.info(res2);
             if (res2.data.is_baoming == 1) {
               _this.setData({
                 is_baoming: false

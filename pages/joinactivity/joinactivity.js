@@ -146,7 +146,6 @@ Page({
                 }
               })
             } else {
-              console.info(_this.data.xiaoyouinfo);
               //判断是否已经加入此校友会
               wx.request({
                 url: app.globalData.url + 'apiXiaoyouList',
@@ -243,7 +242,6 @@ Page({
         data: { openid: openid },
         method: 'POST',
         success: function (res) {
-          console.info('0000');
           if (res.data.name == "" || res.data.name == "null" || res.data.name == null) {
             wx.showModal({
               title: '',
@@ -260,7 +258,6 @@ Page({
               }
             })
           } else {
-            console.info(_this.data.xiaoyouinfo);
             //判断是否已经加入此校友会
             wx.request({
               url: app.globalData.url + 'apiXiaoyouList',
