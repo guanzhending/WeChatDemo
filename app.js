@@ -78,14 +78,14 @@ App({
   },
   globalData: {
     openid:'',
-    appid: 'wx013cd1f748536bc7',
+    appid: '',
     session_key: '',
     userInfo: null,
-    url:'https://m.tianluyangfa.com/public/',
-    imgurl:'http://m.tianluyangfa.com/public/images/pic/xiaoyouhui_top.jpeg',
-    imgpath:'http://m.tianluyangfa.com/public/uploads/',
-    smallimg: 'http://m.tianluyangfa.com/public/images/smallprogramimg/big.png',
-    acimg: 'http://m.tianluyangfa.com/public/images/activity/',
+    url:'https://com/public/',
+    imgurl:'http://com/public/images/pic/xiaoyouhui_top.jpeg',
+    imgpath:'http://com/public/uploads/',
+    smallimg: 'http://com/public/images/smallprogramimg/big.png',
+    acimg: 'http://com/public/images/activity/',
     shareTicket: ''
   }
 })
