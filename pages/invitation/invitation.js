@@ -18,12 +18,16 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    wx.showLoading({
+      title: '加载中',
+    })
     var _this = this;
     wx.request({
       url: app.globalData.url + 'apiActivityDetail',
       data: { id: options.id},
       method: 'POST',
       success: function (res) {
+        wx.hideLoading();
         _this.setData({
           activityinfo: res.data,
         })
@@ -76,7 +80,6 @@ Page({
                 url: '../personal/personal',
               })
             }
-            wx.hideLoading();
           },
           fail: function (res) {
             console.error(res);
@@ -112,7 +115,6 @@ Page({
               url: '../personal/personal',
             })
           }
-          wx.hideLoading();
         },
         fail: function (res) {
           console.error(res);

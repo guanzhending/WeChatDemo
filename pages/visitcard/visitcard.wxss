@@ -40,6 +40,9 @@ Page {
   flex-direction: column;
   justify-content: center;
 }
-.weui-cells {
-  position: static;
+.weui-cells:before {
+  border-top:0;
+}
+.weui-cells:after {
+  border-bottom: 0;
 }

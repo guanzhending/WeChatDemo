@@ -81,11 +81,11 @@ App({
     appid: 'wx013cd1f748536bc7',
     session_key: '',
     userInfo: null,
-    url:'https://tianluyangfa.com/xiaoyouhui/public/',
-    imgurl:'http://m.tianluyangfa.com/xiaoyouhui/public/images/pic/xiaoyouhui_top.jpeg',
-    imgpath:'http://m.tianluyangfa.com/xiaoyouhui/public/uploads/',
-    smallimg: 'http://m.tianluyangfa.com/xiaoyouhui/public/images/smallprogramimg/big.png',
-    acimg: 'http://m.tianluyangfa.com/xiaoyouhui/public/images/activity/',
+    url:'https://m.tianluyangfa.com/public/',
+    imgurl:'http://m.tianluyangfa.com/public/images/pic/xiaoyouhui_top.jpeg',
+    imgpath:'http://m.tianluyangfa.com/public/uploads/',
+    smallimg: 'http://m.tianluyangfa.com/public/images/smallprogramimg/big.png',
+    acimg: 'http://m.tianluyangfa.com/public/images/activity/',
     shareTicket: ''
   }
 })

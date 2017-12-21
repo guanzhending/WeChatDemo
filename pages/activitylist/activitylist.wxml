@@ -11,7 +11,7 @@
         <navigator url='../activityinfo/activityinfo?id={{activity.id}}' open-type='navigate' hover-class="navigator-hover">
           <view class='acontent'>
             <view class='content'>
-              <text style='font-size:10px;'>{{activity.date}}</text>
+              <!-- <text style='font-size:10px;'>{{activity.date}}</text> -->
               <text style='font-size:25px;font-family:"黑体"'>{{activity.day}}</text>
               <text style='font-size:13px;'>{{activity.week}}</text>
             </view>

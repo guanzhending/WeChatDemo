@@ -21,6 +21,9 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    wx.showLoading({
+      title: '加载中',
+    })
     var _this = this;
     wx.request({
       url: app.globalData.url + 'apiActivityDetail',
@@ -40,6 +43,7 @@ Page({
             wx.request({
               url: app.globalData.url + 'apiXiaoyouhuiDetail/' + res.data.xiaoyou_id,
               success: function (res2) {
+                wx.hideLoading();
                 if(res2.data.school_info != null){
                   _this.setData({
                     schoolinfo: res2.data.school_info,

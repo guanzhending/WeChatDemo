@@ -18,10 +18,10 @@
         <text style='font-size:11px;color:#fff;'>{{activityinfo.content}}</text>
       </view>
     </view>
-    <view style='height:180px;width:180px;padding-top:10px;margin:0 auto;'>
+    <view style='height:20%;width:36vw;padding-top:10px;margin:0 auto;'>
         <image src='{{src}}' mode='{{mode}}' style='height:100%;width:100%;'></image>
     </view>
-    <view style='width:100%;margin-top:90px;'>
+    <view style='width:100%;position:fixed; bottom:10px;'>
       <button class="weui-btn" type="primary" style='background-color:#2ebd59;margin:0 20px;' open-type="share">分享活动</button>
     </view>
   </view>
