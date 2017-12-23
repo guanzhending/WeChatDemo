@@ -72,6 +72,7 @@ App({
     })
   },
   onShow: function(ops){
+    var _this = this;
     if (ops.scene == 1044) {
       wx.setStorageSync('shareTicket', ops.shareTicket);
     }

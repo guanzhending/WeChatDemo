@@ -23,8 +23,8 @@ Page {
   align-items: center;
 }
 .content2 {
-  width:50%;
-  padding-left: 15px;
+  width:80%;
+  display: block;
 }
 .content2-mes {
   height:36px;

@@ -41,7 +41,11 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (option) {
+    wx.showLoading({
+      title: '加载中',
+    })
     if (app.globalData.userInfo) {
+      wx.hideLoading();
       this.setData({
         userInfo: app.globalData.userInfo,
         hasUserInfo: true
@@ -50,6 +54,7 @@ Page({
       // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
       // 所以此处加入 callback 以防止这种情况
       app.userInfoReadyCallback = res => {
+        wx.hideLoading();
         this.setData({
           userInfo: res.userInfo,
           hasUserInfo: true
@@ -59,6 +64,7 @@ Page({
       // 在没有 open-type=getUserInfo 版本的兼容处理
       wx.getUserInfo({
         success: res => {
+          wx.hideLoading();
           app.globalData.userInfo = res.userInfo
           this.setData({
             userInfo: res.userInfo,
@@ -148,7 +154,7 @@ Page({
                       var myDate = new Date();
                       var schooltime = res2.data.school_time != null ? res2.data.school_time : '';
                       var birthday = res2.data.birthday != null ? res2.data.birthday : '';
-                      var endDay = myDate.getFullYear() + '-' + (myDate.getMonth()+1) + '-' + myDate.getDay();
+                      var endDay = myDate.getFullYear() + '-' + (myDate.getMonth() + 1) + '-' + myDate.getDate();
                       _this.setData({
                         nameVal: res2.data.name,
                         telVal: res2.data.tel,
@@ -167,6 +173,7 @@ Page({
                         interestVal: res2.data.aihao,
                         endDay: endDay
                       });
+                      wx.hideLoading();
                     }
                   })
                 }
@@ -279,6 +286,7 @@ Page({
                           interestVal: res2.data.aihao,
                           endDay: endDay
                         });
+                        wx.hideLoading();
                       }
                     })
                   }
@@ -345,7 +353,8 @@ Page({
             console.error(res);
           }
         })
-      }  
+      }
+      wx.hideLoading();  
     }
   },
   /**
@@ -422,7 +431,33 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-  
+    var _this = this;
+    var openid = wx.getStorageSync('openid');
+    if (openid !== '') {
+      wx.request({
+        url: app.globalData.url + 'apiAddUser',
+        data: { openid: openid },
+        method: 'POST',
+        success: function (res) {
+        },
+        fail: function (res) {
+        }
+      })
+    } else {
+      app.openIdReadyCallback = res => {
+        var json = JSON.parse(res.data);
+        openid = json.openid;
+        wx.request({
+          url: app.globalData.url + 'apiAddUser',
+          data: { openid: openid },
+          method: 'POST',
+          success: function (res) {
+          },
+          fail: function (res) {
+          }
+        })
+      }
+    }
   },
 
   /**

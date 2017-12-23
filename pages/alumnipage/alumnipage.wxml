@@ -61,7 +61,7 @@
               <text style='font-size:13px;'>{{activity.week}}</text>
             </view>
             <view class='content2'>
-              <view style='display: flex;flex-direction:column;height:100%;width:100%;'>
+              <view style='display: flex;flex-direction:column;height:100%;padding-left:8%;'>
                 <view class='content2-mes'>
                   <text style='font-size:16px;color:#333333;display:block;width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;'>{{activity.title}}</text>
                 </view>
@@ -75,14 +75,14 @@
                     <text class='time' style='justify-content: flex-start;'>时间　</text>
                     <text class='time'>{{activity.date}}</text>
                   </view>
-                  <view class='message'  style='justify-content: flex-start;'>
-                    <text class='time'>地点　</text>
-                    <text class='time' style='display:block;width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;'>{{activity.address}}</text>
+                  <view class='message'  style='justify-content: flex-start;width:100%;'>
+                    <text class='time' style='width:36px;'>地点　</text>
+                    <text class='time' style='display:block;overflow:hidden;width:100%;text-overflow:ellipsis;white-space:nowrap;'>{{activity.address}}</text>
                   </view>
                 </view>
               </view>
             </view>
-            <view style='width:23%;padding:10px;'>
+            <view style='width:23%;padding:10px;' wx:if='{{false}}'>
               <view style='height:100%;width:100%;'>
                 <image src='{{src}}{{activity.imgsrc}}' mode='{{mode}}' style='height:90px;width:90px;'></image>
               </view>

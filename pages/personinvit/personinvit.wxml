@@ -22,7 +22,7 @@
     <view class='person'>
       <view class='personinfo'>
         <view class='personinfo2'>
-          <view style='height:100%;width:20%;'>
+          <view style='height:70px;width:70px;'>
             <image src='{{img}}' mode='{{mode}}' style='height:100%;width:100%;'></image>
           </view>
           <view style='height:100%;width:80%;' class='personinfo3'>

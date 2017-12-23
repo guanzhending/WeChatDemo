@@ -28,8 +28,8 @@ Page {
   justify-content: center;
 }
 .alumniimg {
-  height: 100%;
-  width: 30%;
+  height: 100px;
+  width: 100px;
 }
 .alumnimsg {
   height: 100%;

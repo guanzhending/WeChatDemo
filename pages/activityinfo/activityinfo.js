@@ -6,8 +6,8 @@ Page({
    * 页面的初始数据
    */
   data: {
-    src: app.globalData.acimg,
-    mode: 'aspectFit',
+    src: app.globalData.acimg + 'activityhead.jpg',
+    mode: 'scaleToFill',
     applicants: 'ewq',
     activityInfo: '',
     is_baoming: true,

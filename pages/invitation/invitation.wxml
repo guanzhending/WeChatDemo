@@ -3,7 +3,7 @@
   <view class='page_bd' style="height:100%;width:100%;background-image:url('{{topimg}}');background-repeat:no-repeat;background-size:100% 100%;">
     <view style='width:70%;height:300px;margin:0 auto;padding-top:30px;display:flex;flex-direction: column;align-items:center;'>
       <view class='headportrait'>
-        <image src='{{userInfo.avatarUrl}}' mode='{{mode}}' style='height:100%;width:100%;'></image>
+        <image src='{{userInfo.avatarUrl}}' mode='{{mode}}' style='height:60px;width:60px;'></image>
       </view>
       <view class='name'>
           <text style='font-size:20px;color:#ffffff;'>{{info.name}}</text>

@@ -19,7 +19,10 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    app.onLaunch = res => {}
+    wx.showLoading({
+      title: '加载中',
+      mask: true
+    })
     if (!app.globalData.userInfo) {
       wx.getUserInfo({
         success: res => {
@@ -43,6 +46,7 @@ Page({
         data: { id: options.userid },
         method: 'POST',
         success: function (res) {
+          wx.hideLoading();
           _this.setData({
             userinfo: res.data,
             img: res.data.headImg,
@@ -162,97 +166,9 @@ Page({
                     if (_this.data.alumniInfo.is_connect == 1 && _this.data.alumniInfo.wx_name != null && _this.data.alumniInfo.wx_name != 'null' && _this.data.alumniInfo.wx_name != '') {
                       var shareTicket = wx.getStorageSync('shareTicket');
                       if (shareTicket != '') {
-                        wx.checkSession({
-                          success: function () {
-                            wx.getShareInfo({
-                              shareTicket: shareTicket,
-                              complete: function (res) {
-                                var updateOpenGId = {
-                                  encryptedData: res.encryptedData,
-                                  iv: res.iv,
-                                  appid: app.globalData.appid,
-                                  sessionKey: wx.getStorageSync('session_key')
-                                }
-                                wx.request({
-                                  url: app.globalData.url + 'getopenID',
-                                  method: 'POST',
-                                  data: updateOpenGId,
-                                  success: function (res) {
-                                    if (res.data == '-41001' || res.data == '-41002') {
-                                      wx.showModal({
-                                        title: '',
-                                        content: '加入失败',
-                                        showCancel: false,
-                                        confirmText: '知道了'
-                                      })
-                                      return;
-                                    }
-                                    var openGid = JSON.parse(res.data);
-                                    if (openGid.openGId != _this.data.alumniInfo.wx_name) {
-                                      wx.showModal({
-                                        title: '',
-                                        content: '您没有权限加入此校友会',
-                                        showCancel: false,
-                                        confirmText: '知道了',
-                                        success: function (res) {
-                                          wx.switchTab({
-                                            url: '../alumnilist/alumnilist',
-                                          })
-                                        }
-                                      })
-                                    } else {
-                                      //加入校友会
-                                      var data = {
-                                        openid: openid,
-                                        xiaoyou_id: _this.data.alumniInfo.id
-                                      }
-                                      wx.request({
-                                        url: app.globalData.url + 'apiEnterXiaoyou',
-                                        method: 'POST',
-                                        data: data,
-                                        success: function (res) {
-                                          wx.hideLoading();
-                                          wx.showToast({
-                                            title: '成功',
-                                            icon: 'success',
-                                            duration: 2000,
-                                            success: function (res) {
-                                              wx.switchTab({
-                                                url: '../alumnilist/alumnilist',
-                                              })
-                                              // wx.navigateBack({
-                                              //   delta: 1
-                                              // })
-                                            }
-                                          })
-                                        },
-                                        fail: function (res) {
-                                          wx.hideLoading();
-                                          wx.showModal({
-                                            title: '',
-                                            content: '加入失败',
-                                            showCancel: false,
-                                            confirmText: '知道了'
-                                          })
-                                        }
-                                      })
-                                    }
-                                  },
-                                  fail: function (res) {
-                                    wx.hideLoading();
-                                    wx.showModal({
-                                      title: '',
-                                      content: '加入失败',
-                                      showCancel: false,
-                                      confirmText: '知道了'
-                                    })
-                                  }
-                                })
-                              }
-                            })
-                          },
-                          fail: function () {
-                            //登录态过期
+                        wx.getShareInfo({
+                          shareTicket: shareTicket,
+                          complete: function(res3){
                             wx.login({
                               success: res => {
                                 wx.request({
@@ -260,9 +176,9 @@ Page({
                                   success: function (res2) {
                                     var json = JSON.parse(res2.data);
                                     var updateOpenGId = {
-                                      alumniId: _this.data.info.id,
-                                      encryptedData: res.encryptedData,
-                                      iv: res.iv,
+                                      alumniId: _this.data.alumniInfo.id,
+                                      encryptedData: res3.encryptedData,
+                                      iv: res3.iv,
                                       appid: app.globalData.appid,
                                       sessionKey: json.session_key
                                     }
@@ -310,9 +226,16 @@ Page({
                                                 icon: 'success',
                                                 duration: 2000,
                                                 success: function (res) {
-                                                  wx.switchTab({
-                                                    url: '../alumnilist/alumnilist',
-                                                  })
+                                                  var pagelength = getCurrentPages().length;
+                                                  if (pagelength == 1) {
+                                                    wx.switchTab({
+                                                      url: '../alumnilist/alumnilist',
+                                                    })
+                                                  } else {
+                                                    wx.navigateBack({
+                                                      delta: 1
+                                                    })
+                                                  }
                                                   // wx.navigateBack({
                                                   //   delta: 1
                                                   // })
@@ -344,6 +267,7 @@ Page({
                                 })
                               }
                             })
+
                           }
                         })
                       } else {
@@ -377,9 +301,16 @@ Page({
                               showCancel: false,
                               confirmText: '知道了',
                               success: function (res) {
-                                wx.switchTab({
-                                  url: '../alumnilist/alumnilist',
-                                })
+                                var pagelength = getCurrentPages().length;
+                                if (pagelength == 1) {
+                                  wx.switchTab({
+                                    url: '../alumnilist/alumnilist',
+                                  })
+                                } else {
+                                  wx.navigateBack({
+                                    delta: 1
+                                  })
+                                }
                                 // wx.navigateBack({
                                 //   delta: 1
                                 // })
@@ -490,97 +421,9 @@ Page({
                   if (_this.data.alumniInfo.is_connect == 1 && _this.data.alumniInfo.wx_name != null && _this.data.alumniInfo.wx_name != 'null' && _this.data.alumniInfo.wx_name != '') {
                     var shareTicket = wx.getStorageSync('shareTicket');
                     if (shareTicket != ''){
-                      wx.checkSession({
-                        success: function () {
-                          wx.getShareInfo({
-                            shareTicket: shareTicket,
-                            complete: function (res) {
-                              var updateOpenGId = {
-                                encryptedData: res.encryptedData,
-                                iv: res.iv,
-                                appid: app.globalData.appid,
-                                sessionKey: wx.getStorageSync('session_key')
-                              }
-                              wx.request({
-                                url: app.globalData.url + 'getopenID',
-                                method: 'POST',
-                                data: updateOpenGId,
-                                success: function (res) {
-                                  if (res.data == '-41001' || res.data == '-41002') {
-                                    wx.showModal({
-                                      title: '',
-                                      content: '加入失败',
-                                      showCancel: false,
-                                      confirmText: '知道了'
-                                    })
-                                    return;
-                                  }
-                                  var openGid = JSON.parse(res.data);
-                                  if (openGid.openGId != _this.data.alumniInfo.wx_name) {
-                                    wx.showModal({
-                                      title: '',
-                                      content: '您没有权限加入此校友会',
-                                      showCancel: false,
-                                      confirmText: '知道了',
-                                      success: function (res) {
-                                        wx.switchTab({
-                                          url: '../alumnilist/alumnilist',
-                                        })
-                                      }
-                                    })
-                                  } else {
-                                    //加入校友会
-                                    var data = {
-                                      openid: openid,
-                                      xiaoyou_id: _this.data.alumniInfo.id
-                                    }
-                                    wx.request({
-                                      url: app.globalData.url + 'apiEnterXiaoyou',
-                                      method: 'POST',
-                                      data: data,
-                                      success: function (res) {
-                                        wx.hideLoading();
-                                        wx.showToast({
-                                          title: '成功',
-                                          icon: 'success',
-                                          duration: 2000,
-                                          success: function (res) {
-                                            wx.switchTab({
-                                              url: '../alumnilist/alumnilist',
-                                            })
-                                            // wx.navigateBack({
-                                            //   delta: 1
-                                            // })
-                                          }
-                                        })
-                                      },
-                                      fail: function (res) {
-                                        wx.hideLoading();
-                                        wx.showModal({
-                                          title: '',
-                                          content: '加入失败',
-                                          showCancel: false,
-                                          confirmText: '知道了'
-                                        })
-                                      }
-                                    })
-                                  }
-                                },
-                                fail: function (res) {
-                                  wx.hideLoading();
-                                  wx.showModal({
-                                    title: '',
-                                    content: '加入失败',
-                                    showCancel: false,
-                                    confirmText: '知道了'
-                                  })
-                                }
-                              })
-                            }
-                          })
-                        },
-                        fail: function(){
-                          //登录态过期
+                      wx.getShareInfo({
+                        shareTicket: shareTicket,
+                        complete: function (res3) {
                           wx.login({
                             success: res => {
                               wx.request({
@@ -588,9 +431,9 @@ Page({
                                 success: function (res2) {
                                   var json = JSON.parse(res2.data);
                                   var updateOpenGId = {
-                                    alumniId: _this.data.info.id,
-                                    encryptedData: res.encryptedData,
-                                    iv: res.iv,
+                                    alumniId: _this.data.alumniInfo.id,
+                                    encryptedData: res3.encryptedData,
+                                    iv: res3.iv,
                                     appid: app.globalData.appid,
                                     sessionKey: json.session_key
                                   }
@@ -638,12 +481,16 @@ Page({
                                               icon: 'success',
                                               duration: 2000,
                                               success: function (res) {
-                                                wx.switchTab({
-                                                  url: '../alumnilist/alumnilist',
-                                                })
-                                                // wx.navigateBack({
-                                                //   delta: 1
-                                                // })
+                                                var pagelength = getCurrentPages().length;
+                                                if (pagelength == 1) {
+                                                  wx.switchTab({
+                                                    url: '../alumnilist/alumnilist',
+                                                  })
+                                                } else {
+                                                  wx.navigateBack({
+                                                    delta: 1
+                                                  })
+                                                }
                                               }
                                             })
                                           },
@@ -671,9 +518,10 @@ Page({
                                 }
                               })
                             }
-                          })
+                          }) 
+
                         }
-                      })  
+                      })
                     }else{
                       wx.showModal({
                         title: '',
@@ -705,12 +553,16 @@ Page({
                             showCancel: false,
                             confirmText: '知道了',
                             success: function (res) {
-                              wx.switchTab({
-                                url: '../alumnilist/alumnilist',
-                              })
-                              // wx.navigateBack({
-                              //   delta: 1
-                              // })
+                              var pagelength = getCurrentPages().length;
+                              if (pagelength == 1) {
+                                wx.switchTab({
+                                  url: '../alumnilist/alumnilist',
+                                })
+                              } else {
+                                wx.navigateBack({
+                                  delta: 1
+                                })
+                              }
                             }
                           })
                         }else{

@@ -8,7 +8,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-    files: [],
+    // files: [],
     countries: [],
     contryinfo: [],
     countryIndex: "",
@@ -20,7 +20,9 @@ Page({
     realname: "",
     activityInfo: '',
     activityID: 0,
-    imgsrc: ''
+    imgsrc: '',
+    beginDay: '',
+    delimg: app.globalData.imgpath + 'del.png',
   },
 
   /**
@@ -70,11 +72,20 @@ Page({
                 time: res2.data.time,
                 realname: res2.data.address
               })
-              if (res2.data.imgsrc != '' && res2.data.imgsrc != null && res2.data.imgsrc != undefined){
+              var realname = res2.data.address;
+              if (realname != undefined && realname != '') {
+                if (realname.length > 10) {
+                  realname = realname.substring(0, 10) + '...';
+                }
                 _this.setData({
-                  files: [app.globalData.acimg + res2.data.imgsrc]
+                  address: realname
                 })
               }
+              // if (res2.data.imgsrc != '' && res2.data.imgsrc != null && res2.data.imgsrc != undefined){
+              //   _this.setData({
+              //     files: [app.globalData.acimg + res2.data.imgsrc]
+              //   })
+              // }
             }
           })
         }
@@ -82,6 +93,11 @@ Page({
       fail: function (res) {
         console.error(res);
       }
+    })
+    var myDate = new Date();
+    var beginDay = myDate.getFullYear() + '-' + (myDate.getMonth() + 1) + '-' + myDate.getDate();
+    _this.setData({
+      beginDay: beginDay
     })
   },
 
@@ -126,61 +142,61 @@ Page({
   onReachBottom: function () {
 
   },
-  chooseImage: function (e) {
-    var that = this;
-    wx.chooseImage({
-      count: 1,
-      sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
-      sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
-      success: function (res) {
-        // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
-        that.setData({
-          files: that.data.files.concat(res.tempFilePaths[0])
-        });
-        wx.uploadFile({
-          url: app.globalData.url + 'saveImg',//仅为示例，非真实的接口地址
-          filePath: that.data.files[0],
-          name: 'file',
-          success: function (res) {
-            var data = res.data;
-            if(data){
-              var imgs = JSON.parse(data);
-              that.setData({
-                imgsrc: imgs.imgsrc,
-              });
-            }
-            //do something
-          }
-        })
-      }
-    })
-  },
-  previewImage: function (e) {
-    // wx.previewImage({
-    //   current: e.currentTarget.id, // 当前显示图片的http链接
-    //   urls: this.data.files // 需要预览的图片http链接列表
-    // })
-    //获取当前图片的下标
-    var index = e.currentTarget.dataset.index;
-    //所有图片
-    var files = this.data.files;
+  // chooseImage: function (e) {
+  //   var that = this;
+  //   wx.chooseImage({
+  //     count: 1,
+  //     sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+  //     sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+  //     success: function (res) {
+  //       // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
+  //       that.setData({
+  //         files: that.data.files.concat(res.tempFilePaths[0])
+  //       });
+  //       wx.uploadFile({
+  //         url: app.globalData.url + 'saveImg',//仅为示例，非真实的接口地址
+  //         filePath: that.data.files[0],
+  //         name: 'file',
+  //         success: function (res) {
+  //           var data = res.data;
+  //           if(data){
+  //             var imgs = JSON.parse(data);
+  //             that.setData({
+  //               imgsrc: imgs.imgsrc,
+  //             });
+  //           }
+  //           //do something
+  //         }
+  //       })
+  //     }
+  //   })
+  // },
+  // previewImage: function (e) {
+  //   // wx.previewImage({
+  //   //   current: e.currentTarget.id, // 当前显示图片的http链接
+  //   //   urls: this.data.files // 需要预览的图片http链接列表
+  //   // })
+  //   //获取当前图片的下标
+  //   var index = e.currentTarget.dataset.index;
+  //   //所有图片
+  //   var files = this.data.files;
 
-    wx.previewImage({
-      //当前显示图片
-      current: files[index],
-      //所有图片
-      urls: files
-    })
-  },
-  // 删除图片
-  deleteImg: function (e) {
-    var files = this.data.files;
-    var index = e.currentTarget.dataset.index;
-    files.splice(index, 1);
-    this.setData({
-      files: files
-    });
-  }, 
+  //   wx.previewImage({
+  //     //当前显示图片
+  //     current: files[index],
+  //     //所有图片
+  //     urls: files
+  //   })
+  // },
+  // // 删除图片
+  // deleteImg: function (e) {
+  //   var files = this.data.files;
+  //   var index = e.currentTarget.dataset.index;
+  //   files.splice(index, 1);
+  //   this.setData({
+  //     files: files
+  //   });
+  // }, 
   bindCountryChange: function (e) {
     this.setData({
       countryIndex: e.detail.value
@@ -292,15 +308,15 @@ Page({
       })
       return
     }
-    if (this.data.files.length == 0) {
-      wx.showModal({
-        title: '',
-        content: '您还没有添加图片',
-        showCancel: false,
-        confirmText: '知道了'
-      })
-      return
-    }
+    // if (this.data.files.length == 0) {
+    //   wx.showModal({
+    //     title: '',
+    //     content: '您还没有添加图片',
+    //     showCancel: false,
+    //     confirmText: '知道了'
+    //   })
+    //   return
+    // }
     if (this.data.address == "" || this.data.address == undefined || this.data.address == null) {
       wx.showModal({
         title: '',
@@ -318,8 +334,8 @@ Page({
       xiaoyou_id: acinfo.herd,
       date: acinfo.date,
       time: acinfo.time,
-      openid: app.globalData.openid,
-      imgsrc: this.data.imgsrc
+      openid: app.globalData.openid
+      // imgsrc: this.data.imgsrc
     }
     wx.showLoading({
       title: '数据加载中',

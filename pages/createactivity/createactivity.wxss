@@ -13,7 +13,6 @@ Page {
   overflow-y: auto;
 }
 .del_icon {
-  background-image: url('http://m.tianluyangfa.com/xiaoyouhui/public/uploads/del.png');
   position: absolute;
   top: 5px;
   right: 5px;

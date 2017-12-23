@@ -174,7 +174,7 @@ Page({
                         //   url: '../personinvit/personinvit?id=' + _this.data.xiaoyouinfo.id + '&userid = ' + _this.data.userinfo.id,
                         // })
                         wx.navigateTo({
-                          url: '../personinvit/personinvit?id=' + _this.data.xiaoyouinfo.id + '&userid = ' + _this.data.userinfo.id,
+                          url: '../personinvit/personinvit?id=' + _this.data.xiaoyouinfo.id + '&userid=' + _this.data.userinfo.id,
                         })
                       }
                     })
@@ -286,7 +286,7 @@ Page({
                       //   url: '../personinvit/personinvit?id=' + _this.data.xiaoyouinfo.id + '&userid=' + _this.data.userinfo.id,
                       // })
                       wx.navigateTo({
-                        url: '../personinvit/personinvit?id=' + _this.data.xiaoyouinfo.id + '&userid = ' + _this.data.userinfo.id,
+                        url: '../personinvit/personinvit?id=' + _this.data.xiaoyouinfo.id + '&userid=' + _this.data.userinfo.id,
                       })
                     }
                   })
@@ -351,9 +351,5 @@ Page({
         }
       })
     }
-    // wx.showLoading({
-    //   title: '加载中',
-    // })
-
   }
 })
