@@ -17,38 +17,30 @@ App({
       success: res => {
         var _this = this;
         // 发送 res.code 到后台换取 openId, sessionKey, unionId
-        var storOpenid = wx.getStorageSync('openid');
-        var sessionkey = wx.getStorageSync('session_key');
-        if (storOpenid !== ''){
-          _this.globalData.openid = storOpenid;
-          _this.globalData.session_key = sessionkey;
-        }else{
-          wx.request({
-            url: this.globalData.url+'apiCheckLogin/'+res.code,
-            success:function(res) {
-              var json = JSON.parse(res.data);
-              _this.globalData.openid = json.openid;
-              _this.globalData.session_key = json.session_key;
-              // 由于 request 是网络请求，可能会在 Page.onLoad 之后才返回
-              // 所以此处加入 callback 以防止这种情况
-              if (_this.openIdReadyCallback) {
-                _this.openIdReadyCallback(res)
-              }
-              wx.setStorageSync('openid', json.openid);
-              wx.setStorageSync('session_key', json.session_key);
-              wx.request({
-                url: _this.globalData.url +'apiAddUser',
-                data: {openid: _this.globalData.openid},
-                method: 'POST',
-                success: function(res){
-                },
-                fail: function(res){
-                  console.error(res);
-                }
-              })
+        wx.request({
+          url: this.globalData.url+'apiCheckLogin/'+res.code,
+          success:function(res) {
+            var json = JSON.parse(res.data);
+            _this.globalData.openid = json.openid;
+            _this.globalData.session_key = json.session_key;
+            // 由于 request 是网络请求，可能会在 Page.onLoad 之后才返回
+            // 所以此处加入 callback 以防止这种情况
+            if (_this.openIdReadyCallback) {
+              _this.openIdReadyCallback(res)
             }
-          })
-        }
+            wx.setStorageSync('openid', json.openid);
+            wx.setStorageSync('session_key', json.session_key);
+            wx.request({
+              url: _this.globalData.url +'apiAddUser',
+              data: {openid: _this.globalData.openid},
+              method: 'POST',
+              success: function(res){
+              },
+              fail: function(res){
+              }
+            })
+          }
+        })
       }
     })
     // 获取用户信息
@@ -76,6 +68,28 @@ App({
     if (ops.scene == 1044) {
       wx.setStorageSync('shareTicket', ops.shareTicket);
     }
+    wx.checkSession({
+      success: function () {
+        //session 未过期，并且在本生命周期一直有效
+      },
+      fail: function () {
+        //登录态过期
+        // 登录
+        wx.login({
+          success: res => {
+            // 发送 res.code 到后台换取 openId, sessionKey, unionId
+            wx.request({
+              url: _this.globalData.url + 'apiCheckLogin/' + res.code,
+              success: function (res) {
+                var json = JSON.parse(res.data);
+                _this.globalData.session_key = json.session_key;
+                wx.setStorageSync('session_key', json.session_key);
+              }
+            })
+          }
+        })
+      }
+    })
   },
   globalData: {
     openid:'',

@@ -66,7 +66,6 @@ Page({
         }
       },
       fail: function (res) {
-        console.error(res);
       }
     })
     wx.request({
@@ -295,16 +294,6 @@ Page({
           wx.navigateBack({
             delta: 1
           })
-          // console.info(option.data);
-          // wx.redirectTo({
-          //   url: '/pages/alumnipage/alumnipage?id=' + option.data,
-          //   success: function (res) {
-          //     wx.hideLoading();
-          //   },
-          //   fail: function (res) {
-          //     console.info(res);
-          //   }
-          // })
         },
         fail: function () {
           wx.showModal({
@@ -344,7 +333,6 @@ Page({
               wx.hideLoading();
             },
             fail: function (res) {
-              console.info(res);
             }
           })
         },

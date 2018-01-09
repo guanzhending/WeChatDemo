@@ -91,7 +91,6 @@ Page({
         }
       },
       fail: function (res) {
-        console.error(res);
       }
     })
     var myDate = new Date();
@@ -225,11 +224,6 @@ Page({
         // })
         wx.chooseLocation({
           success: function (res) {
-            // var name = res.name;
-            // var address = res.address;
-            // var la = res.latitude;
-            // var lo = res.longitude;
-            // console.log(address + name + la + lo);
             var realname = res.name;
             thistest.setData({
               realname: realname
@@ -272,7 +266,7 @@ Page({
       })
       return
     }
-    if (acinfo.acinfo == '') {
+    if (acinfo.acinfos == '') {
       wx.showModal({
         title: '',
         content: '您还没有输入活动介绍',
@@ -329,7 +323,7 @@ Page({
     var requestData = {
       id: this.data.activityID,
       title: acinfo.actitle,
-      content: acinfo.acinfo,
+      content: acinfo.acinfos,
       address: this.data.realname,
       xiaoyou_id: acinfo.herd,
       date: acinfo.date,

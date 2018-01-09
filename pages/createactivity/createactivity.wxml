@@ -10,7 +10,7 @@
         </view>
         <view class="weui-cell">
           <view class="weui-cell__bd">
-              <textarea class="weui-textarea" placeholder="活动介绍（最多200字）" maxlength='200' style="height: 3.3em" name="acinfo" value='{{activityInfo.content}}'/>
+              <textarea class="weui-textarea" placeholder="活动介绍（最多200字）" maxlength='200' style="height: 3.3em" name="acinfos" value='{{activityInfo.content}}'/>
           </view>
         </view>
         <view class="weui-cells" wx:if='{{false}}'>

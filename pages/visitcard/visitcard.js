@@ -71,7 +71,6 @@ Page({
             wx.hideLoading();
           },
           fail: function (res) {
-            console.error(res);
           }
         })
       }
@@ -107,7 +106,6 @@ Page({
           wx.hideLoading();
         },
         fail: function (res) {
-          console.error(res);
         }
       })
     }

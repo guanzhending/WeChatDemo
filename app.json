@@ -14,7 +14,8 @@
     "pages/index/index",
     "pages/mycard/mycard",
     "pages/personinvit/personinvit",
-    "pages/create/create"
+    "pages/create/create",
+    "pages/test1/test1"
   ],
   "window": {
     "backgroundTextStyle": "light",

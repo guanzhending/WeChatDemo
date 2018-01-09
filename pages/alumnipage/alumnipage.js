@@ -53,7 +53,6 @@ Page({
         }
       },
       fail:function(res){
-        console.error(res);
       }
     })
   },
@@ -92,7 +91,6 @@ Page({
         }
       },
       fail: function (res) {
-        console.error(res);
       }
     })
   },
@@ -143,76 +141,66 @@ Page({
             if (res.errMsg == 'shareAppMessage:ok') {
               wx.getShareInfo({
                 shareTicket: res.shareTickets[0],
-                complete: function (res) {
-                  wx.login({
-                    success: res3 => {
-                      wx.request({
-                        url: app.globalData.url + 'apiCheckLogin/' + res3.code,
-                        success: function(res2){
-                          var json = JSON.parse(res2.data);
-                          var updateOpenGId = {
-                            alumniId: _this.data.info.id,
-                            encryptedData: res.encryptedData,
-                            iv: res.iv,
-                            appid: app.globalData.appid,
-                            sessionKey: json.session_key,
-                            openid: app.globalData.openid
+                complete: function (res4) {
+                  var session_key = wx.getStorageSync('session_key');
+                  var updateOpenGId = {
+                    alumniId: _this.data.info.id,
+                    encryptedData: res4.encryptedData,
+                    iv: res4.iv,
+                    appid: app.globalData.appid,
+                    sessionKey: session_key,
+                    openid: app.globalData.openid
+                  }
+                  wx.request({
+                    url: app.globalData.url + 'getOpenGid',
+                    method: 'POST',
+                    data: updateOpenGId,
+                    success: function (res5) {
+                      if (res5.data == 'isbuild') {
+                        wx.showModal({
+                          title: '绑定结果',
+                          content: '校友会已绑定，绑定微信群失败',
+                          showCancel: false,
+                          confirmText: '知道了'
+                        })
+                      }else if (res5.data == '-41003') {
+                        wx.showModal({
+                          title: '绑定结果',
+                          content: '绑定微信群失败,请重新绑定',
+                          showCancel: false,
+                          confirmText: '知道了'
+                        })
+                      } else if (res5.data == 'notmanage') {
+                        wx.showModal({
+                          title: '绑定结果',
+                          content: '您不是校友会管理员，绑定失败',
+                          showCancel: false,
+                          confirmText: '知道了'
+                        })
+                      }else{
+                        wx.showToast({
+                          title: '绑定成功',
+                          icon: 'success',
+                          duration: 2000
+                        })
+                        wx.request({
+                          url: app.globalData.url + 'apiXiaoyouhuiDetail/' + _this.data.alumniId,
+                          success: function (res6) {
+                            _this.setData({
+                              info: res6.data,
+                            })
+                          },
+                          fail: function (res) {
                           }
-                          wx.request({
-                            url: app.globalData.url + 'getOpenGid',
-                            method: 'POST',
-                            data: updateOpenGId,
-                            success: function (res) {
-                              if (res.data == 'isbuild') {
-                                wx.showModal({
-                                  title: '绑定结果',
-                                  content: '校友会已绑定，绑定微信群失败',
-                                  showCancel: false,
-                                  confirmText: '知道了'
-                                })
-                              }else if (res.data == '-41003') {
-                                wx.showModal({
-                                  title: '绑定结果',
-                                  content: '绑定微信群失败',
-                                  showCancel: false,
-                                  confirmText: '知道了'
-                                })
-                              } else if (res.data == 'notmanage') {
-                                wx.showModal({
-                                  title: '绑定结果',
-                                  content: '您不是校友会管理员，绑定失败',
-                                  showCancel: false,
-                                  confirmText: '知道了'
-                                })
-                              }else{
-                                wx.showToast({
-                                  title: '绑定成功',
-                                  icon: 'success',
-                                  duration: 2000
-                                })
-                                wx.request({
-                                  url: app.globalData.url + 'apiXiaoyouhuiDetail/' + _this.data.alumniId,
-                                  success: function (res) {
-                                    _this.setData({
-                                      info: res.data,
-                                    })
-                                  },
-                                  fail: function (res) {
-                                    console.error(res);
-                                  }
-                                })
-                              }
-                            },
-                            fail: function (res) {
-                              wx.showModal({
-                                title: '绑定结果',
-                                content: '绑定微信群失败,服务器错误',
-                                showCancel: false,
-                                confirmText: '知道了'
-                              })
-                            }
-                          })
-                        }
+                        })
+                      }
+                    },
+                    fail: function (res) {
+                      wx.showModal({
+                        title: '绑定结果',
+                        content: '绑定微信群失败,服务器错误',
+                        showCancel: false,
+                        confirmText: '知道了'
                       })
                     }
                   })

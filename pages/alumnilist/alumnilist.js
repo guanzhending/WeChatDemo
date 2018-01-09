@@ -55,7 +55,6 @@ Page({
           });
         },
         fail: function (res) {
-          console.error(res);
         }
       })
     }
@@ -134,7 +133,6 @@ Page({
                 },
                 fail: function (res) {
                   wx.hideLoading();
-                  console.error(res);
                 }
               })
             } else {
@@ -145,7 +143,6 @@ Page({
             wx.hideLoading();
           },
           fail: function (res) {
-            console.error(res);
           }
         })
       }
@@ -184,7 +181,6 @@ Page({
               },
               fail: function (res) {
                 wx.hideLoading();
-                console.error(res);
               }
             })
           } else {
@@ -195,7 +191,6 @@ Page({
           wx.hideLoading();
         },
         fail: function (res) {
-          console.error(res);
         }
       })
     }
@@ -257,7 +252,6 @@ Page({
           },
           fail: function (res) {
             wx.hideLoading();
-            console.error(res);
           }
         })
       }
@@ -290,7 +284,6 @@ Page({
         },
         fail: function (res) {
           wx.hideLoading();
-          console.error(res);
         }
       })
     }

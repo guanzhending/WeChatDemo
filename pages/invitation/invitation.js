@@ -82,7 +82,6 @@ Page({
             }
           },
           fail: function (res) {
-            console.error(res);
           }
         })
       }
@@ -117,33 +116,41 @@ Page({
           }
         },
         fail: function (res) {
-          console.error(res);
         }
       })
     }
   },
   onShareAppMessage: function (res) {
     var _this = this;
+    wx.showShareMenu({
+      withShareTicket: true
+    })
     if (res.from === 'button') {
       // 来自页面内转发按钮
-    }
-    var date = new Date();
-    var time = date.getFullYear() + "/" + (date.getMonth() +1) + "/" + date.getDate();
-    var path = 'pages/joinactivity/joinactivity?id=' + _this.data.activityinfo.id + '&userid=' + _this.data.info.id + '&time=' + time;
-    return {
-      title: '邀请函',
-      path: path,
-      success: function (res) {
-        // 转发成功
-        wx.showToast({
-          title: '分享成功',
-          icon: 'success',
-          duration: 2000
-        })
-      },
-      fail: function (res) {
-        // 转发失败
+      var date = new Date();
+      var time = date.getFullYear() + "/" + (date.getMonth() +1) + "/" + date.getDate();
+      var path = 'pages/joinactivity/joinactivity?id=' + _this.data.activityinfo.id + '&userid=' + _this.data.info.id + '&time=' + time;
+      return {
+        title: '邀请函',
+        path: path,
+        success: function (res) {
+          // 转发成功
+          wx.showToast({
+            title: '分享成功',
+            icon: 'success',
+            duration: 2000
+          })
+        },
+        fail: function (res) {
+          // 转发失败
+        }
       }
+    }else{
+      wx.showToast({
+        title: '分享成功',
+        icon: 'success',
+        duration: 2000
+      })
     }
   }
 })

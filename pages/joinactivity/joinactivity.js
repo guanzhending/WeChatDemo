@@ -51,7 +51,6 @@ Page({
                 }
               },
               fail: function (res3) {
-                console.error(res3);
               }
             })
           }
@@ -69,7 +68,6 @@ Page({
         })
       },
       fail: function (res) {
-        console.error(res);
       }
     })
     _this.setData({
@@ -135,6 +133,7 @@ Page({
           method: 'POST',
           success: function (res) {
             if (res.data.name == "" || res.data.name == "null" || res.data.name == null) {
+              wx.hideLoading();
               wx.showModal({
                 title: '',
                 content: '请先编辑个人信息',
@@ -164,6 +163,7 @@ Page({
                     }
                   }
                   if (isexit) {
+                    wx.hideLoading();
                     wx.showModal({
                       title: '',
                       content: '还没有加入校友会，请先加入该活动所属校友会',
@@ -191,6 +191,7 @@ Page({
                       success: function (res) {
                         wx.hideLoading();
                         if (res.data == 'isset') {
+                          wx.hideLoading();
                           wx.showModal({
                             title: '提示',
                             content: '您已经加入活动，不能重复加入',
@@ -206,36 +207,46 @@ Page({
                             }
                           })
                         } else if (res.data == 'success') {
-                          wx.showToast({
-                            title: '加入成功',
-                            icon: 'success',
-                            duration: 2000,
+                          wx.hideLoading();
+                          wx.showModal({
+                            title: '',
+                            content: '加入成功！',
+                            showCancel: false,
+                            confirmText: '知道了',
                             success: function (res) {
                               wx.switchTab({
-                                // url: '../activityinfo/activityinfo?id=' + _this.data.activityinfo.id,
                                 url: '../activitylist/activitylist',
                               })
                             }
                           })
+                          // wx.showToast({
+                          //   title: '加入成功',
+                          //   icon: 'success',
+                          //   duration: 1000,
+                          //   mask: true
+                          // });
+                          // setTimeout(function () {
+                          //   wx.switchTab({
+                          //     // url: '../activityinfo/activityinfo?id=' + _this.data.activityinfo.id,
+                          //     url: '../activitylist/activitylist',
+                          //   })
+                          // }, 1000);
                         }
                       },
                       fail: function (res) {
                         wx.hideLoading();
-                        console.error(res);
                       }
                     })
                   }
                 },
                 fail: function (res) {
                   wx.hideLoading();
-                  console.error(res);
                 }
               })
             }
             wx.hideLoading();
           },
           fail: function (res) {
-            console.error(res);
           }
         })
       }
@@ -247,6 +258,7 @@ Page({
         method: 'POST',
         success: function (res) {
           if (res.data.name == "" || res.data.name == "null" || res.data.name == null) {
+            wx.hideLoading();
             wx.showModal({
               title: '',
               content: '请先编辑个人信息',
@@ -276,6 +288,7 @@ Page({
                   }
                 }
                 if (isexit) {
+                  wx.hideLoading();
                   wx.showModal({
                     title: '',
                     content: '还没有加入校友会，请先加入该活动所属校友会',
@@ -301,8 +314,8 @@ Page({
                     data: data,
                     method: 'POST',
                     success: function(res){
-                      wx.hideLoading();
                       if (res.data == 'isset'){
+                        wx.hideLoading();
                         wx.showModal({
                           title: '提示',
                           content: '您已经加入活动，不能重复加入',
@@ -318,13 +331,26 @@ Page({
                           }
                         })
                       } else if (res.data == 'success'){
-                        wx.showToast({
-                          title: '加入成功',
-                          icon: 'success',
-                          duration: 2000,
-                          success: function(res){
+                        wx.hideLoading();
+                        // wx.showToast({
+                        //   title: '加入成功',
+                        //   icon: 'success',
+                        //   duration: 1000,
+                        //   mask: true
+                        // });
+                        // setTimeout(function () {
+                        //   wx.switchTab({
+                        //     // url: '../activityinfo/activityinfo?id=' + _this.data.activityinfo.id,
+                        //     url: '../activitylist/activitylist',
+                        //   })
+                        // }, 1000);
+                        wx.showModal({
+                          title: '',
+                          content: '加入成功！',
+                          showCancel: false,
+                          confirmText: '知道了',
+                          success: function (res) {
                             wx.switchTab({
-                              // url: '../activityinfo/activityinfo?id=' + _this.data.activityinfo.id,
                               url: '../activitylist/activitylist',
                             })
                           }
@@ -333,21 +359,18 @@ Page({
                     },
                     fail: function(res){
                       wx.hideLoading();
-                      console.error(res);
                     }
                   })
                 }
               },
               fail: function (res) {
                 wx.hideLoading();
-                console.error(res);
               }
             })
           }
           wx.hideLoading();
         },
         fail: function (res) {
-          console.error(res);
         }
       })
     }

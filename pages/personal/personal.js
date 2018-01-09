@@ -182,7 +182,6 @@ Page({
           });
         },
         fail: function (res) {
-          console.error(res);
         }
       })
     }else{
@@ -350,7 +349,6 @@ Page({
             });
           },
           fail: function (res) {
-            console.error(res);
           }
         })
       }

@@ -55,7 +55,6 @@ Page({
           });
         },
         fail: function (res) {
-          console.error(res);
         }
       })
     }
@@ -130,7 +129,6 @@ Page({
         })
       },
       fail: function (res) {
-        console.error(res);
       }
     })
   },
