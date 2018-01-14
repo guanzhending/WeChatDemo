@@ -177,6 +177,7 @@ Page({
     }
   },
   formSubmit: function (e) {
+    var _this = this;
     if (!this.data.isAgree){
       wx.showModal({
         title: '',
@@ -231,121 +232,133 @@ Page({
       })
       return
     }
-    if (e.detail.value.invite != "170512") {
-      wx.showModal({
-        title: '',
-        content: '邀请码错误，请联系管理员',
-        showCancel: false,
-        confirmText: '知道了'
-      })
-      return
-    }
-    var cityString = '';
-    for (var i = 0; i < e.detail.value.citys.length; i++){
-      cityString += e.detail.value.citys[i] + ' ';
-    }
-    var alinfo = '';
-    if (this.data.alumniid != ''){
-      if (this.data.isconnect == 1){
-        if (this.data.wx_name == null || this.data.wx_name == 'null'){
-          alinfo = {
-            id: this.data.alumniid,
-            name: e.detail.value.alname,
-            school_id: this.data.alinfo[this.data.schoolIndex].id,
-            area: cityString,
-            content: e.detail.value.alumnidetail,
-            is_connect: this.data.isconnect
+    wx.request({
+      url: app.globalData.url + 'getInvotCode',
+      method: 'POST',
+      success: function (res) {
+        if (res.data.indexOf(e.detail.value.invite) > -1){
+          var cityString = '';
+          for (var i = 0; i < e.detail.value.citys.length; i++) {
+            cityString += e.detail.value.citys[i] + ' ';
+          }
+          var alinfo = '';
+          if (_this.data.alumniid != '') {
+            if (_this.data.isconnect == 1) {
+              if (_this.data.wx_name == null || _this.data.wx_name == 'null') {
+                alinfo = {
+                  id: _this.data.alumniid,
+                  name: e.detail.value.alname,
+                  school_id: _this.data.alinfo[_this.data.schoolIndex].id,
+                  area: cityString,
+                  content: e.detail.value.alumnidetail,
+                  is_connect: _this.data.isconnect,
+                  invitcode: e.detail.value.invite
+                }
+              } else {
+                alinfo = {
+                  id: _this.data.alumniid,
+                  name: e.detail.value.alname,
+                  school_id: _this.data.alinfo[_this.data.schoolIndex].id,
+                  area: cityString,
+                  content: e.detail.value.alumnidetail,
+                  wx_name: _this.data.wx_name,
+                  is_connect: _this.data.isconnect,
+                  invitcode: e.detail.value.invite
+                }
+              }
+            } else {
+              alinfo = {
+                id: _this.data.alumniid,
+                name: e.detail.value.alname,
+                school_id: _this.data.alinfo[_this.data.schoolIndex].id,
+                area: cityString,
+                wx_name: '',
+                content: e.detail.value.alumnidetail,
+                is_connect: _this.data.isconnect,
+                invitcode: e.detail.value.invite
+              }
+            }
+            wx.showLoading({
+              title: '数据加载中',
+              mask: true
+            });
+            wx.request({
+              url: app.globalData.url + '/apiAddXiaoyou',
+              data: alinfo,
+              success: function (option) {
+                wx.showToast({
+                  title: '更新成功',
+                  icon: 'success',
+                  duration: 2000
+                })
+                wx.navigateBack({
+                  delta: 1
+                })
+              },
+              fail: function () {
+                wx.showModal({
+                  title: '',
+                  content: '创建失败',
+                  showCancel: false,
+                  confirmText: '知道了'
+                })
+                return
+              }
+            })
+          } else {
+            alinfo = {
+              name: e.detail.value.alname,
+              school_id: _this.data.alinfo[_this.data.schoolIndex].id,
+              area: cityString,
+              content: e.detail.value.alumnidetail,
+              add_user: app.globalData.openid,
+              is_connect: _this.data.isconnect,
+              invitcode: e.detail.value.invite
+            }
+            wx.showLoading({
+              title: '数据加载中',
+              mask: true
+            });
+            wx.request({
+              url: app.globalData.url + '/apiAddXiaoyou',
+              data: alinfo,
+              success: function (option) {
+                wx.showToast({
+                  title: '创建成功',
+                  icon: 'success',
+                  duration: 2000
+                })
+                wx.redirectTo({
+                  url: '/pages/alumnipage/alumnipage?id=' + option.data,
+                  success: function (res) {
+                  },
+                  fail: function (res) {
+                  }
+                })
+              },
+              fail: function () {
+                wx.showModal({
+                  title: '',
+                  content: '创建失败',
+                  showCancel: false,
+                  confirmText: '知道了'
+                })
+                return
+              }
+            })
           }
         }else{
-          alinfo = {
-            id: this.data.alumniid,
-            name: e.detail.value.alname,
-            school_id: this.data.alinfo[this.data.schoolIndex].id,
-            area: cityString,
-            content: e.detail.value.alumnidetail,
-            wx_name: this.data.wx_name,
-            is_connect: this.data.isconnect
-          }
-      }
-    }else{
-        alinfo = {
-          id: this.data.alumniid,
-          name: e.detail.value.alname,
-          school_id: this.data.alinfo[this.data.schoolIndex].id,
-          area: cityString,
-          wx_name: '',
-          content: e.detail.value.alumnidetail,
-          is_connect: this.data.isconnect
-        }
-    }
-      wx.showLoading({
-        title: '数据加载中',
-        mask: true
-      });
-      wx.request({
-        url: app.globalData.url + '/apiAddXiaoyou',
-        data: alinfo,
-        success: function (option) {
-          wx.showToast({
-            title: '更新成功',
-            icon: 'success',
-            duration: 2000
-          })
-          wx.navigateBack({
-            delta: 1
-          })
-        },
-        fail: function () {
           wx.showModal({
             title: '',
-            content: '创建失败',
+            content: '邀请码错误，请联系管理员',
             showCancel: false,
             confirmText: '知道了'
           })
           return
         }
-      })
-    }else{
-      alinfo = {
-        name: e.detail.value.alname,
-        school_id: this.data.alinfo[this.data.schoolIndex].id,
-        area: cityString,
-        content: e.detail.value.alumnidetail,
-        add_user: app.globalData.openid,
-        is_connect: this.data.isconnect
+      },
+      fail: function (res) {
       }
-      wx.showLoading({
-        title: '数据加载中',
-        mask: true
-      });
-      wx.request({
-        url: app.globalData.url + '/apiAddXiaoyou',
-        data: alinfo,
-        success: function (option) {
-          wx.showToast({
-            title: '创建成功',
-            icon: 'success',
-            duration: 2000
-          })
-          wx.redirectTo({
-            url: '/pages/alumnipage/alumnipage?id=' + option.data,
-            success: function (res) {
-              wx.hideLoading();
-            },
-            fail: function (res) {
-            }
-          })
-        },
-        fail: function () {
-          wx.showModal({
-            title: '',
-            content: '创建失败',
-            showCancel: false,
-            confirmText: '知道了'
-          })
-          return
-        }
-      })
-    }
+    })
   }
 })

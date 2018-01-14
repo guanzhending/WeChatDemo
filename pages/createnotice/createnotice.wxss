@@ -1,0 +1,13 @@
+/* pages/createnotice/createnotice.wxss */
+Page {
+  background: #F4F6F7;
+  overflow-x: hidden;
+  overflow-y: auto;
+  height: 100%;
+}
+.weui-cells__title{
+  margin-top: 0;
+}
+.weui-cell::before{
+  border: 0;
+}

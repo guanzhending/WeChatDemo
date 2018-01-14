@@ -1,6 +1,11 @@
 {
   "pages": [
     "pages/alumnilist/alumnilist",
+    "pages/alumnipage/alumnipage",
+    "pages/createnotice/createnotice",
+    "pages/alumnimanager/alumnimanager",
+    "pages/noticeinfo/noticeinfo",
+    "pages/noticelist/noticelist",
     "pages/joinactivity/joinactivity",
     "pages/invitation/invitation",
     "pages/createpage/createpage",
@@ -10,7 +15,6 @@
     "pages/personal/personal",
     "pages/visitcard/visitcard",
     "pages/addresslist/addresslist",
-    "pages/alumnipage/alumnipage",
     "pages/index/index",
     "pages/mycard/mycard",
     "pages/personinvit/personinvit",
@@ -19,8 +23,9 @@
   ],
   "window": {
     "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "WeChat",
+    "backgroundColor": "#F4F6F7",
+    "navigationBarBackgroundColor": "#F4F6F7",
+    "navigationBarTitleText": "校友会",
     "navigationBarTextStyle": "black"
   },
   "tabBar": {

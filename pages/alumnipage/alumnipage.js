@@ -11,6 +11,7 @@ Page({
     mode: 'scaleToFill',
     isAgree: false,
     creater: '../../image/creater.png',
+    notice: '../../image/notice.png',
     addresslist: '../../image/addresslist.png',
     people: '../../image/right.png',
     activities: '',
@@ -20,7 +21,8 @@ Page({
     headimg: '',
     hasactivity: false,
     addresslisturl: '',
-    alumniId: ''
+    alumniId: '',
+    noticelisturl: ''
   },
 
   /**
@@ -44,6 +46,7 @@ Page({
         _this.setData({
           info: res.data,
           addresslisturl: '../addresslist/addresslist?id=' + res.data.id,
+          noticelisturl: '../noticelist/noticelist?id=' + res.data.id,
           headimg: app.globalData.imgpath + res.data.school_info.logo
         })
         if (res.data.activitys.length > 0){
@@ -232,7 +235,7 @@ Page({
    */
   edit: function(res){
     wx.navigateTo({
-      url: '../createpage/createpage?id=' + this.data.info.id
+      url: '../alumnimanager/alumnimanager?id=' + this.data.info.id
     })
   },
   /**
