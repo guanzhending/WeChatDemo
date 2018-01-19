@@ -6,7 +6,8 @@ Page({
    * 页面的初始数据
    */
   data: {
-    noticelist: ''
+    noticelist: '',
+    xiaoyouid: ''
   },
 
   /**
@@ -26,7 +27,8 @@ Page({
         success: function(res){
           wx.hideLoading();
           _this.setData({
-            noticelist: res.data
+            noticelist: res.data,
+            xiaoyouid: options.id
           })
         }
       })
@@ -44,7 +46,24 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-  
+    var _this = this;
+    if (_this.data.xiaoyouid) {
+      wx.showLoading({
+        title: '加载中',
+        mask: true
+      })
+      wx.request({
+        url: app.globalData.url + 'getNotice',
+        method: 'POST',
+        data: { xiaoyou_id: _this.data.xiaoyouid },
+        success: function (res) {
+          wx.hideLoading();
+          _this.setData({
+            noticelist: res.data
+          })
+        }
+      })
+    }
   },
 
   /**

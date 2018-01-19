@@ -17,9 +17,9 @@
         </view>
         <view class="weui-search-bar__cancel-btn" hidden="{{!inputShowed}}" bindtap="hideInput">取消</view>
     </view>
-    <view class="weui-cells searchbar-result" wx:if="{{inputVal.length > 0}}">
+    <view class="weui-cells searchbar-result" wx:if="{{inputVal.length > 0}}" style="position: absolute;width:100%;z-index: 999999;">
       <block wx:for="{{search}}"  wx:for-item="info">
-        <navigator url="../mycard/mycard?userid={{info.userinfo.id}}" class="weui-cell" hover-class="weui-cell_active">
+        <navigator url="../mycard/mycard?userid={{info.userinfo.id}}&alumniID={{alumniID}}" class="weui-cell" hover-class="weui-cell_active">
             <view class="weui-cell__bd">
                 <view>{{info.userinfo.name}}</view>
             </view>
@@ -43,11 +43,15 @@
                 <view class='title'>{{idx1}}</view>
               </view>
               <block wx:for="{{list}}" wx:for-item="list11">
-                <navigator url='../mycard/mycard?userid={{list11.userinfo.id}}' open-type='navigate' hover-class="navigator-hover">
+                <navigator url='../mycard/mycard?userid={{list11.userinfo.id}}&alumniID={{alumniID}}' open-type='navigate' hover-class="navigator-hover">
                   <view style='height:60px;padding:15px 20px;'>
                     <view style='position:relative;height:60px;'>
-                      <view class='peopleimg'>
+                      <view class='peopleimg' wx:if="{{list11.userinfo.headImg != null}}">
                         <image src='{{list11.userinfo.headImg}}' class='peopleimg2'>
+                        </image>
+                      </view>
+                      <view wx:else class='peopleimg'>
+                      <image src='../../image/moren.png' class='peopleimg2'>
                         </image>
                       </view>
                       <view class='info'>
@@ -62,7 +66,7 @@
                             </block>
                           </view>
                         </view>
-                        <view class='info_work' style='display:block;width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;'>{{list11.userinfo.company}} {{list11.userinfo.zhiwei}}</view>
+                        <view class='info_work' style='display:block;width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;' wx:if="{{list11.userinfo.zhiwei != null && list11.userinfo.company != null}}">{{list11.userinfo.company}} {{list11.userinfo.zhiwei}}</view>
                       </view>
                       <view class='right_img'>
                         <image src='../../image/right.png' class='right_img2'></image>
@@ -81,11 +85,15 @@
                 <view class='title'>{{idx2}}</view>
               </view>
               <block wx:for="{{list}}" wx:for-item="list22">
-                <navigator url='../mycard/mycard?userid={{list22.userinfo.id}}' open-type='navigate' hover-class="navigator-hover">
+                <navigator url='../mycard/mycard?userid={{list22.userinfo.id}}&alumniID={{alumniID}}' open-type='navigate' hover-class="navigator-hover">
                   <view style='height:60px;padding:15px 20px;'>
                     <view style='position:relative;height:60px;'>
-                      <view class='peopleimg'>
+                      <view class='peopleimg' wx:if="{{list22.userinfo.headImg != null}}">
                         <image src='{{list22.userinfo.headImg}}' class='peopleimg2'>
+                        </image>
+                      </view>
+                      <view wx:else class='peopleimg'>
+                      <image src='../../image/moren.png' class='peopleimg2'>
                         </image>
                       </view>
                       <view class='info'>
@@ -119,11 +127,15 @@
                 <view class='title'>{{idx3}}</view>
               </view>
               <block wx:for="{{list}}" wx:for-item="list33">
-                <navigator url='../mycard/mycard?userid={{list33.userinfo.id}}' open-type='navigate' hover-class="navigator-hover">
+                <navigator url='../mycard/mycard?userid={{list33.userinfo.id}}&alumniID={{alumniID}}' open-type='navigate' hover-class="navigator-hover">
                   <view style='height:60px;padding:15px 20px;'>
                     <view style='position:relative;height:60px;'>
-                      <view class='peopleimg'>
+                      <view class='peopleimg' wx:if="{{list33.userinfo.headImg != null}}">
                         <image src='{{list33.userinfo.headImg}}' class='peopleimg2'>
+                        </image>
+                      </view>
+                      <view wx:else class='peopleimg'>
+                      <image src='../../image/moren.png' class='peopleimg2'>
                         </image>
                       </view>
                       <view class='info'>

@@ -103,7 +103,7 @@ Page({
                 region: area,
                 alumnidetail: res.data.content,
                 is_connect: is_connect,
-                invitnum: '170512',
+                invitnum: res.data.invitcode,
                 wx_name: res.data.wx_name
               })
             }

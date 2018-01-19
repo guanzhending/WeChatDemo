@@ -9,7 +9,8 @@ Page({
     topmsg: app.globalData.imgurl,
     mode: 'scaleToFill',
     info: '',
-    headimg: ''
+    headimg: '',
+    alumniID: ''
   },
 
   /**
@@ -20,6 +21,9 @@ Page({
     wx.showLoading({
       title: '加载中',
       mask: true
+    })
+    _this.setData({
+      alumniID: options.id
     })
     wx.request({
       url: app.globalData.url + 'apiXiaoyouhuiDetail/' + options.id,
@@ -46,7 +50,23 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-  
+    var _this = this;
+    wx.showLoading({
+      title: '加载中',
+      mask: true
+    })
+    wx.request({
+      url: app.globalData.url + 'apiXiaoyouhuiDetail/' + _this.data.alumniID,
+      success: function (res) {
+        wx.hideLoading();
+        _this.setData({
+          info: res.data,
+          headimg: app.globalData.imgpath + res.data.school_info.logo
+        })
+      },
+      fail: function (res) {
+      }
+    })
   },
 
   /**
@@ -97,7 +117,7 @@ Page({
    */
   notice: function (res) {
     wx.navigateTo({
-      url: '../createnotice/createnotice?id=' + this.data.info.id
+      url: '../createnotice/createnotice?xiaoyouid=' + this.data.info.id
     })
   },
   /**

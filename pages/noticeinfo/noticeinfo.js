@@ -7,7 +7,9 @@ Page({
    */
   data: {
     notice: '',
-    ismanager: false
+    ismanager: false,
+    noticeid: '',
+    images: []
   },
 
   /**
@@ -28,9 +30,21 @@ Page({
           if (app.globalData.openid) {
             if (app.globalData.openid == res.data.creater) {
               _this.setData({
-                ismanager: true
+                ismanager: true,
+                noticeid: options.id
               })
             }
+          }
+          if (res.data.images != '' && res.data.images != null) {
+            var images = new Array();
+            var fileImages = new Array();
+            images = res.data.images.split(",");
+            for (var i = 0; i < images.length; i++) {
+              fileImages.push(app.globalData.acimg + images[i]);
+            }
+            _this.setData({
+              images: fileImages
+            })
           }
           wx.hideLoading();
           _this.setData({
@@ -52,7 +66,42 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-  
+    var _this = this;
+    if (_this.data.noticeid != '') {
+      wx.showLoading({
+        title: '加载中',
+        mask: true
+      })
+      wx.request({
+        url: app.globalData.url + 'getNotice',
+        method: 'POST',
+        data: { id: _this.data.noticeid },
+        success: function (res) {
+          if (app.globalData.openid) {
+            if (app.globalData.openid == res.data.creater) {
+              _this.setData({
+                ismanager: true
+              })
+            }
+          }
+          if (res.data.images != '' && res.data.images != null) {
+            var images = new Array();
+            var fileImages = new Array();
+            images = res.data.images.split(",");
+            for (var i = 0; i < images.length; i++) {
+              fileImages.push(app.globalData.acimg + images[i]);
+            }
+            _this.setData({
+              images: fileImages
+            })
+          }
+          wx.hideLoading();
+          _this.setData({
+            notice: res.data
+          })
+        }
+      })
+    }
   },
 
   /**

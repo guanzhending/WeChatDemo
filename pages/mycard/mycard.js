@@ -11,7 +11,8 @@ Page({
     backimg: app.globalData.imgurl,
     smallimg: app.globalData.smallimg,
     info: '',
-    userInfo: ''
+    userInfo: '',
+    tel: ''
   },
 
   /**
@@ -19,6 +20,10 @@ Page({
    */
   onLoad: function (options) {
     var _this =this;
+    wx.showLoading({
+      title: '加载中',
+      mask: true
+    })
     if (app.globalData.userInfo) {
       _this.setData({
         userInfo: app.globalData.userInfo,
@@ -42,6 +47,28 @@ Page({
        _this.setData({
          info: res.data
        });
+       if (options.alumniID) {
+         wx.request({
+           url: app.globalData.url + 'getXiaoyouhuiManage/' + options.alumniID,
+           method: 'GET',
+           success: function (res2) {
+             var openid = app.globalData.openid;
+             if (res.data.isopen == 1 && openid != res2.data.openid && openid != res.data.openid){
+               _this.setData({
+                 tel: res.data.tel.substring(0, 3) + "********" 
+
+               });
+             }else{
+               _this.setData({
+                 tel: res.data.tel
+               });
+             }
+             wx.hideLoading();
+          },
+           fail: function (res) {
+           }
+         })
+       }
      },
      fail: function (res) {
      }

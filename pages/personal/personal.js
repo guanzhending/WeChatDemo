@@ -34,7 +34,9 @@ Page({
     positionVal: '',
     personalInfoVal: '',
     addressVal: '',
-    endDay: ''
+    endDay: '',
+    is_private: false,
+    privatetext: '公开，所有校友可见'
   },
 
   /**
@@ -155,6 +157,17 @@ Page({
                       var schooltime = res2.data.school_time != null ? res2.data.school_time : '';
                       var birthday = res2.data.birthday != null ? res2.data.birthday : '';
                       var endDay = myDate.getFullYear() + '-' + (myDate.getMonth() + 1) + '-' + myDate.getDate();
+                      if (res2.data.isopen == 0){
+                        _this.setData({
+                          is_private: false,
+                          privatetext: '公开，所有校友可见'
+                        })
+                      }else{
+                        _this.setData({
+                          is_private: true,
+                          privatetext: '不公开，只有管理员可见'
+                        })
+                      }
                       _this.setData({
                         nameVal: res2.data.name,
                         telVal: res2.data.tel,
@@ -597,15 +610,6 @@ Page({
       })
       return
     }
-    if (e.detail.value.address == "") {
-      wx.showModal({
-        title: '',
-        content: '您还没有输入常住地',
-        showCancel: false,
-        confirmText: '知道了'
-      })
-      return
-    }
     var tel = "";
     if (e.detail.value.telPhone != ""){
       tel = e.detail.value.telPhone.trim();
@@ -619,6 +623,8 @@ Page({
         return
       }
     }
+    //公开信息为0，不公开为1
+    var isopen = e.detail.value.private ? 1 : 0;
     var person = {
       openid: app.globalData.openid,
       name: e.detail.value.name,
@@ -636,7 +642,8 @@ Page({
       address: e.detail.value.address,
       birthday: e.detail.value.birthday,
       aihao: e.detail.value.interest,
-      headImg: this.data.userInfo.avatarUrl
+      headImg: this.data.userInfo.avatarUrl,
+      isopen: isopen
     }
     wx.showLoading({
       title: '数据加载中',
@@ -673,5 +680,17 @@ Page({
         })
       }
     })
+  },
+  switchChange: function(e){
+    var _this = this;
+    if (e.detail.value){
+      _this.setData({
+        privatetext: '不公开，只有管理员可见'
+      })
+    }else{
+      _this.setData({
+        privatetext: '公开，所有校友可见'
+      })
+    }
   }
 })

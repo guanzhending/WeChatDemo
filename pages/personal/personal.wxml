@@ -38,6 +38,13 @@
               <input class="weui-input" placeholder="请输入微信号（最多30字）" maxlength='30' style='text-align:right;' name="weChatId" value='{{weChatVal}}'/>
           </view>
         </view>
+        <view class="weui-cell weui-cell_switch">
+          <view class="weui-cell__bd">隐私保护</view>
+          <view style='font-size:13px;color:#C0C0C0;margin-right:8px;'>{{privatetext}}</view>
+          <view class="weui-cell__ft">
+              <switch name="private" checked='{{is_private}}' bindchange="switchChange"/>
+          </view>
+        </view>
       </view>
       <view class="weui-cells__title">学校信息</view>
       <view class="weui-cells weui-cells_after-title">
@@ -142,12 +149,11 @@
             </view>
         </view>
       </view>
-      <view class="weui-cells__title">基本信息</view>
+      <view class="weui-cells__title">个人信息</view>
       <view class="weui-cells weui-cells_after-title">
         <view class="weui-cell weui-cell_input">
           <view class="weui-cell__hd">
             <view class="weui-label">常住地
-            <text style='color:#ff0000;text-align:center;'>*</text>
             </view>
           </view>
           <view class="weui-cell__bd">
