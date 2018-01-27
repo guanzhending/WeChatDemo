@@ -136,6 +136,7 @@ Page({
                 }
               })
             } else {
+              
               wx.reLaunch({
                 url: '../personal/personal',
               })

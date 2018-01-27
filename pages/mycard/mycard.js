@@ -39,6 +39,7 @@ Page({
       })
     }
    var _this = this;
+   console.info(options.userid);
    wx.request({
      url: app.globalData.url + 'apiUserInfo',
      data: { id: options.userid},
